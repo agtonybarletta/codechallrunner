@@ -1,0 +1,4 @@
+This is a string<EOI> other string
+String 1
+String 2
+<EOF>

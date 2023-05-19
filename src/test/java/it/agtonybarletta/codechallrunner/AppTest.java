@@ -1,0 +1,164 @@
+package it.agtonybarletta.codechallrunner;
+
+import java.util.List;
+import java.util.function.Function;
+
+import com.google.common.flogger.FluentLogger;
+
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
+
+/**
+ * Unit test for simple App.
+ */
+public class AppTest 
+    extends TestCase
+{
+
+	private static final FluentLogger logger = FluentLogger.forEnclosingClass();
+    /**
+     * Create the test case
+     *
+     * @param testName name of the test case
+     */
+    public AppTest( String testName )
+    {
+        super( testName );
+    }
+
+    /**
+     * @return the suite of tests being tested
+     */
+    public static Test suite()
+    {
+        return new TestSuite( AppTest.class );
+    }
+
+    /**
+     * Rigourous Test :-)
+     */
+    public void testApp()
+    {
+        assertTrue( true );
+    }
+
+	public void testDoubleString(){
+		//System.out.println("testing double string");
+		CodeChallRunner runner = new CodeChallRunner();
+		runner.addFile("input2")
+		.addInput(new StringInput(Input.NEW_LINE))
+		.addInput(new StringInput(Input.NEW_LINE))
+		.parse();
+
+		List<Object> inputs = runner.getInput();
+		String  s = (String) inputs.get(0);
+		assertEquals(s, "string1");
+		s = (String) inputs.get(1);
+		assertEquals(s, "string2");
+	}
+
+	public void testDoubleStringEmptyLine(){
+		//System.out.println("testing double string separated by empty line");
+		CodeChallRunner runner = new CodeChallRunner();
+		runner.addFile("inputDoubleStringEmptyLine")
+		.addInput(new StringInput(Input.EMPTY_LINE))
+		.addInput(new StringInput(Input.EMPTY_LINE))
+		.parse();
+
+		List<Object> inputs = runner.getInput();
+		String  s = (String) inputs.get(0);
+		assertEquals(s, "string1");
+		s = (String) inputs.get(1);
+		assertEquals(s, "string2");
+	}
+
+	public void testDoubleStringSingleLine(){
+		//System.out.println("testing double string separated by comma");
+		CodeChallRunner runner = new CodeChallRunner();
+		runner.addFile("inputDoubleStringSingleLine")
+		.addInput(new StringInput(","))
+		.addInput(new StringInput(Input.NEW_LINE))
+		.parse();
+
+		List<Object> inputs = runner.getInput();
+		String  s = (String) inputs.get(0);
+		assertEquals(s, "string1");
+		s = (String) inputs.get(1);
+		assertEquals(s, "string2");
+	}
+	public void testListString(){
+		//System.out.println("testing list of strings");
+		CodeChallRunner runner = new CodeChallRunner();
+		runner.addFile("inputListString")
+		.addInput(new ListInput<String>(Input.NEW_LINE,Input.NEW_LINE, "".getClass()))
+		.parse();
+
+		runner.getInput().toString();
+		List<Object> inputs = runner.getInput();
+
+		assertEquals(inputs.size(), 1);
+		assertEquals(((List<String>)inputs.get(0)).size(), 2);
+		String  s = (String) ((List<String>)inputs.get(0)).get(0);
+		assertEquals(s, "string1");
+		s = (String) ((List<String>)inputs.get(0)).get(1);
+		assertEquals(s, "string2");
+	}
+
+	public void testSingleInteger(){
+		logger.atInfo().log("testing testSingleInteger");
+		
+		CodeChallRunner runner = new CodeChallRunner();
+		runner.addFile("inputSingleInteger")
+		.addInput(new SingleInput<>(Input.NEW_LINE, Input.Mappers.intMapper))
+		.parse();
+
+		List<Object> inputs = runner.getInput();
+		logger.atInfo().log( "input: %s", inputs.toString());
+		assertEquals(inputs.size(), 1);
+		assertEquals(inputs.get(0), 1);	
+		logger.atInfo().log("testSingleInteger passed");
+	}
+
+	public void testSingleString(){
+		logger.atInfo().log("testing testSingleString");
+		CodeChallRunner runner = new CodeChallRunner();
+		runner.addFile("inputSingleString")
+		.addInput(new SingleInput<>(Input.NEW_LINE,Input.Mappers.stringMapper))
+		.parse();
+
+		List<Object> inputs = runner.getInput();
+		logger.atInfo().log( "input: %s", inputs.toString());
+		assertEquals(inputs.size(), 1);
+		String  s = (String) inputs.get(0);
+		assertEquals(s, "singleString");
+		logger.atInfo().log("testSingleString passed");
+	}
+	private Integer add(Integer i1, Integer i2){
+		return i1 + i2;
+	}
+	public void testAddition(){
+		logger.atInfo().log("testing testAddition");
+		CodeChallRunner runner = new CodeChallRunner();
+		Function<Object[],Object> fun = (ol) -> this.add((Integer)ol[0], (Integer)ol[1]);
+		boolean passed = runner
+			.addFile("inputAddition")
+			.addInput(new SingleInput<>(Input.NEW_LINE, Input.Mappers.intMapper))
+			.addInput(new SingleInput<>(Input.NEW_LINE, Input.Mappers.intMapper))
+			.addFile("outputAddition")
+			.addOutput(new SingleInput<>(Input.NEW_LINE, Input.Mappers.intMapper))
+			.parse()
+			.test(fun);
+		List<Object> inputs = runner.getInput();
+		logger.atInfo().log( "input: %s", inputs.toString());
+		assertEquals(inputs.size(), 2);
+		assertEquals(inputs.get(0), 1);	
+		assertEquals(inputs.get(1), 2);	
+		Integer output = (Integer) runner.getOutput();
+		logger.atInfo().log( "output: %s", output.toString());
+		assertEquals(output.intValue(), 3);	
+		assertTrue(passed);
+		logger.atInfo().log("testAddition passed");
+	}
+}
+
