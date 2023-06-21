@@ -17,7 +17,6 @@ public class ListInput<T extends Object> extends Input{
 	private List<T> data;
 	private Class<? extends T> clazz;
 	public ListInput(String terminator, String separator, Class<? extends T> clazz) {
-		super(terminator);
 		this.separator = separator;
 		this.data = new LinkedList<>();
 		this.clazz = clazz;

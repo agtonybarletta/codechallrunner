@@ -3,8 +3,7 @@ package it.agtonybarletta.codechallrunner;
 import java.util.Scanner;
 
 public interface InputI {
-	public void readData(Scanner scanner);
-	public Object getData();
+	public Object readData(Scanner scanner);
 	public void setTerminator(String terminator);
 	public String getTerminator();
 
