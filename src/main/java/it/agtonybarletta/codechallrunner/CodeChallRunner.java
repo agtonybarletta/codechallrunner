@@ -14,43 +14,14 @@ import java.util.stream.Collectors;
 public class CodeChallRunner {
 
   private List<String> files;
-  private String currentFile = null;
-  private Map<String,List<Input>> fileInputMap;
-  private Input output;
-  private List<Input> inputs;
+  private Map<String,List<Input<?>>> fileInputMap;
 
-  public CodeChallRunner() {
-    this.files = new LinkedList<>();
-    this.fileInputMap = new HashMap<>();
-    this.inputs = new LinkedList<>();
+  public CodeChallRunner( List<String> files, Map<String, List<Input<?>>> fileInputMap) {
+    this.files = files;
+    this.fileInputMap = fileInputMap;
   }
 
-  public CodeChallRunner addFile(String filePrefix) {
-    this.files.add(filePrefix);				
-    this.currentFile = filePrefix;
-    this.fileInputMap.put(filePrefix, new LinkedList<>());
-    return this;
-  }
 
-  public CodeChallRunner addInput(Input input) {
-      if(this.currentFile == null){
-          throw new RuntimeException("Cannot add input before adding a file. Call addFile then addInput");
-      }
-      this.fileInputMap.get(this.currentFile).add(input);
-      this.inputs.add(input);
-      return this;
-  }
-
-	public CodeChallRunner addOutput(Input output) {
-		//assert currentFile != null;
-		//System.out.println(" adding input: " + input.toString());
-		if(this.currentFile == null){
-			throw new RuntimeException("Cannot add input before adding a file. Call addFile then addInput");
-		}
-		this.fileInputMap.get(this.currentFile).add(output);
-		this.output = output;
-		return this;
-	}
 
   public CodeChallRunner parse(){
     // TODO: check if there is at least 1 input
@@ -59,7 +30,7 @@ public class CodeChallRunner {
         InputStream inputFile = this.getClass().getClassLoader().getResourceAsStream(s + ".0.txt");
         //System.out.println(inputFile.toString());
         Scanner myReader = new Scanner(inputFile);//new Scanner(myObj);
-        for ( Input i : fileInputMap.get(s))
+        for ( Input<?> i : fileInputMap.get(s))
             i.readData(myReader);
             
         myReader.close();
@@ -96,7 +67,7 @@ public class CodeChallRunner {
 
         List<Object> input = new LinkedList<>();
         scanner = new Scanner(inputFile);
-        for (Input i : fileInputMap.get(s)) {
+        for (Input<?> i : fileInputMap.get(s)) {
             input.add(i.readData(scanner));
         }
         ret.add(input);
@@ -107,5 +78,4 @@ public class CodeChallRunner {
     }
     return ret;
   }
-
 }

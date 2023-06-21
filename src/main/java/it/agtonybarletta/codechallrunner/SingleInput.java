@@ -3,7 +3,7 @@ package it.agtonybarletta.codechallrunner;
 import java.util.Scanner;
 import java.util.function.Function;
 
-public class SingleInput<T> extends Input{
+public class SingleInput<T> extends Input<T>{
 
   private Function<String,T> mapper;
 
@@ -18,7 +18,7 @@ public class SingleInput<T> extends Input{
   }
 
   @Override
-  public Object readData(Scanner scanner) {
+  public T readData(Scanner scanner) {
     T data;
     try{
       scanner = scanner.useDelimiter(this.terminator);

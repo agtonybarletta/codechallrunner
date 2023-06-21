@@ -15,10 +15,10 @@ public class ParserTest {
   @DisplayName("Test single string")
   public void testSingleString() {
     try{
-        CodeChallRunner runner = new CodeChallRunner();
-        runner.addFile("inputSingleString1")
-        .addInput(new SingleInput<String>(Input.Mappers.stringMapper))
-        .parse();
+        CodeChallRunner runner = new CodeChallRunnerBuilder()
+          .addFile("inputSingleString1")
+          .addInput(new SingleInput<String>(Input.Mappers.stringMapper))
+          .build();
 
         List<List<Object>> inputs = runner.getInput(0);
         assertEquals(inputs.size(), 1);
@@ -35,11 +35,11 @@ public class ParserTest {
   @DisplayName("Test multiple strings")
   public void testMultipleStrings() {
     try{
-        CodeChallRunner runner = new CodeChallRunner();
-        runner.addFile("inputMultipleStrings1")
-        .addInput(new SingleInput<String>(Input.Mappers.stringMapper))
-        .addInput(new SingleInput<String>(Input.Mappers.stringMapper))
-        .parse();
+        CodeChallRunner runner = new CodeChallRunnerBuilder()
+          .addFile("inputMultipleStrings1")
+          .addInput(new SingleInput<String>(Input.Mappers.stringMapper))
+          .addInput(new SingleInput<String>(Input.Mappers.stringMapper))
+          .build();
 
         List<List<Object>> inputs = runner.getInput(0);
         assertEquals(inputs.size(), 1);
@@ -59,10 +59,10 @@ public class ParserTest {
   @DisplayName("Test multiple testCases")
   public void testMultipleTestCases() {
     try{
-        CodeChallRunner runner = new CodeChallRunner();
-        runner.addFile("inputSingleString1")
-        .addInput(new SingleInput<String>(Input.Mappers.stringMapper))
-        .parse();
+        CodeChallRunner runner = new CodeChallRunnerBuilder()
+          .addFile("inputSingleString1")
+          .addInput(new SingleInput<String>(Input.Mappers.stringMapper))
+          .build();
 
         List<List<Object>> inputsTestCase1 = runner.getInput(0);
         assertEquals(inputsTestCase1.size(), 1);
@@ -90,14 +90,13 @@ public class ParserTest {
   @DisplayName("Test multiple files")
   public void testMultipleFiles() {
     try{
-      CodeChallRunner runner = new CodeChallRunner();
-      runner
+      CodeChallRunner runner = new CodeChallRunnerBuilder()
         .addFile("inputSingleString1")
         .addInput(new SingleInput<String>(Input.Mappers.stringMapper))
         .addFile("inputMultipleStrings1")
         .addInput(new SingleInput<String>(Input.Mappers.stringMapper))
         .addInput(new SingleInput<String>(Input.Mappers.stringMapper))
-        .parse();
+        .build();
 
         List<List<Object>> inputs = runner.getInput(0);
         assertEquals(inputs.size(), 2);
@@ -128,11 +127,11 @@ public class ParserTest {
   public void testTerminatorSpace() {
     // TODOOO
     try{
-        CodeChallRunner runner = new CodeChallRunner();
-        runner.addFile("inputMultipleStrings1")
-        .addInput(new SingleInput<String>(Input.Mappers.stringMapper))
-        .addInput(new SingleInput<String>(Input.Mappers.stringMapper))
-        .parse();
+        CodeChallRunner runner = new CodeChallRunnerBuilder()
+          .addFile("inputMultipleStrings1")
+          .addInput(new SingleInput<String>(Input.Mappers.stringMapper))
+          .addInput(new SingleInput<String>(Input.Mappers.stringMapper))
+          .build();
 
         List<List<Object>> inputs = runner.getInput(0);
         assertEquals(inputs.size(), 1);

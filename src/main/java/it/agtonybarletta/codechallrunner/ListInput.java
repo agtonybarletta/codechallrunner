@@ -22,7 +22,7 @@ public class ListInput<T extends Object> extends Input{
 		this.clazz = clazz;
 	}
 	
-	public void readData(Scanner scanner){
+	public List<List<T>> readData(Scanner scanner){
 
 		logger.atInfo().log("reading data for ListInput of type %s, terminator %s, delimiter %s", this.clazz.toString(),this.terminator, this.separator);
 		Pattern oldDelimiter = scanner.delimiter();	
@@ -49,11 +49,7 @@ public class ListInput<T extends Object> extends Input{
 		scanner.useDelimiter(oldDelimiter);
 
 		logger.atInfo().log("end readData. data: %s", this.toString());
-	}
-
-	@Override
-	public List<T> getData() {
-		return this.data;
+        return null;
 	}
 
 	public String toString(){

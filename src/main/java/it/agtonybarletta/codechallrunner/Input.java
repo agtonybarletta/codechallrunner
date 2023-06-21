@@ -2,7 +2,7 @@ package it.agtonybarletta.codechallrunner;
 
 import java.util.function.Function;
 
-public abstract class Input implements InputI{
+public abstract class Input<T> implements InputI<T>{
 
   public static String EMPTY_LINE = "(?m)\\n";
   public static String NEW_LINE = "\\n";
