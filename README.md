@@ -9,6 +9,12 @@ Finally it can run you own function against defined tests
 ## TODO
 
 - [X] create runner builder
-- [ ] create Integer Input tests
-- [ ] create SingleIntegerInput without mapper
-- [ ] create SingleStringInput without mapper
+- [X] create Integer Input tests
+- [X] create SingleIntegerInput without mapper
+- [X] create SingleStringInput without mapper
+- [ ] create empty new line test
+- [ ] create list of values test
+- [ ] create list of list of values test
+- [ ] create getAllInputs
+- [ ] create runner test all
+- [ ] look into auto boxing/unboxing

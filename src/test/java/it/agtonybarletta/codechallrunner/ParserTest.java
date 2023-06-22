@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.fail;
 
+import java.io.FileNotFoundException;
 import java.util.List;
 
 import org.junit.jupiter.api.DisplayName;
@@ -28,6 +29,32 @@ public class ParserTest {
         assertEquals(s, "string-without-spaces");
     } catch( Exception e) {
       fail("Test single string failed with exception "+ e.getMessage());
+    }
+  }
+
+  @Test
+  @DisplayName("Test single string comma separated")
+  public void testSingleStringCommaSeparated() {
+    try{
+        CodeChallRunner runner = new CodeChallRunnerBuilder()
+          .addFile("inputSingleStringComma")
+          .addInput(new SingleInput<String>(",", Input.Mappers.stringMapper))
+          .addInput(new SingleInput<String>(",", Input.Mappers.stringMapper))
+          .addInput(new SingleInput<String>(",", Input.Mappers.stringMapper))
+          .build();
+
+        List<List<Object>> inputs = runner.getInput(0);
+        assertEquals(inputs.size(), 1);
+        List<Object> input = inputs.get(0);
+        assertEquals(input.size(), 3);
+        String s = (String) input.get(0);
+        assertEquals(s, "string with");
+        s = (String) input.get(1);
+        assertEquals(s, "comma separated");
+        s = (String) input.get(2);
+        assertEquals(s, "values");
+    } catch( Exception e) {
+      fail("Test single string comma separated failed with exception "+ e.getMessage());
     }
   }
 
@@ -78,8 +105,12 @@ public class ParserTest {
         String s2 = (String) inputTestCase2.get(0);
         assertEquals(s2, "string from another file");
 
-        List<List<Object>> inputs3 = runner.getInput(2);
-        assertNull(inputs3);
+        try{
+          List<List<Object>> inputs3 = runner.getInput(2);
+          fail("Exception FileNotFoundException not thrown");
+        } catch (FileNotFoundException e) {
+
+        }
     } catch( Exception e) {
       fail("Test multiple testcases failed with exception "+ e.getMessage());
     }
@@ -161,4 +192,73 @@ public class ParserTest {
     }
   }
   */
+
+
+  /*
+   * INTEGER
+   */
+  @Test
+  @DisplayName("Test single integer")
+  public void testSingleInteger() {
+    try{
+        CodeChallRunner runner = new CodeChallRunnerBuilder()
+          .addFile("inputSingleInteger")
+          .addInput(new SingleInput<Integer>(Input.Mappers.intMapper))
+          .build();
+
+        List<List<Object>> inputs = runner.getInput(0);
+        assertEquals(inputs.size(), 1);
+        List<Object> input = inputs.get(0);
+        assertEquals(input.size(), 1);
+        Integer i = (Integer) input.get(0);
+        assertEquals(i, -217);
+    } catch( Exception e) {
+      fail("Test single integer failed with exception "+ e.getMessage());
+    }
+  }
+
+  @Test
+  @DisplayName("Test single integer parsing error")
+  public void testSingleIntegerParsingError() {
+    try{
+        CodeChallRunner runner = new CodeChallRunnerBuilder()
+          .addFile("inputSingleString1")
+          .addInput(new SingleInput<Integer>(Input.Mappers.intMapper))
+          .build();
+
+        try{
+          List<List<Object>> inputs = runner.getInput(0);
+          fail("Exception NumberFormatException not thrown");
+        } catch (NumberFormatException e) {
+
+        }
+    } catch( Exception e) {
+      fail("Test single integer failed with exception "+ e.getMessage());
+    }
+  }
+
+
+  @Test
+  @DisplayName("Test specific single inputs")
+  public void testSpecificSingleInputs() {
+    try{
+        CodeChallRunner runner = new CodeChallRunnerBuilder()
+          .addFile("inputSingleString1")
+          .addInput(new SingleString())
+          .addFile("inputSingleInteger")
+          .addInput(new SingleInteger())
+          .build();
+
+        List<List<Object>> inputs = runner.getInput(0);
+        assertEquals(inputs.size(), 2);
+        List<Object> input = inputs.get(0);
+        assertEquals(input.size(), 1);
+        assertEquals((String)input.get(0), "string-without-spaces");
+        input = inputs.get(1);
+        Integer i = (Integer) input.get(0);
+        assertEquals(i, -217);
+    } catch( Exception e) {
+      fail("Test specific single input failed with exception: "+ e.getMessage());
+    }
+  }
 }

@@ -22,9 +22,13 @@ public class SingleInput<T> extends Input<T>{
     T data;
     try{
       scanner = scanner.useDelimiter(this.terminator);
-      data = this.mapper.apply(scanner.next());
+      String rawString = scanner.next();
+      rawString = rawString.trim();
+      data = this.mapper.apply(rawString);
       return data;
-    } catch (Exception e) {
+    } catch (NumberFormatException e) {
+      throw e;
+    } catch (RuntimeException e) {
       throw new RuntimeException("parsing error: " + e.getMessage());
     }
   }

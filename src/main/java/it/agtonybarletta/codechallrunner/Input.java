@@ -9,7 +9,7 @@ public abstract class Input<T> implements InputI<T>{
   public static String SPACE = "\\s";
 
   public static class Mappers {
-    public static final Function<String,Integer> intMapper = (s) -> Integer.valueOf(s);	
+    public static final Function<String,Integer> intMapper = (s) -> Integer.parseInt(s);	
     public static final Function<String,String> stringMapper = (s) -> s;	
   }
 

@@ -51,7 +51,7 @@ public class CodeChallRunner {
   }
   */
 
-  public List<List<Object>> getInput(Integer testCaseNumber){
+  public List<List<Object>> getInput(Integer testCaseNumber) throws FileNotFoundException, NumberFormatException{
     List<List<Object>> ret = new LinkedList<>();
 
     Scanner scanner = null;
@@ -62,7 +62,7 @@ public class CodeChallRunner {
         InputStream inputFile = this.getClass().getClassLoader().getResourceAsStream(fileName);
         
         if (inputFile == null) {
-          return null;
+          throw new FileNotFoundException("File not found: "+fileName);
         }
 
         List<Object> input = new LinkedList<>();
@@ -71,8 +71,9 @@ public class CodeChallRunner {
             input.add(i.readData(scanner));
         }
         ret.add(input);
-            
       }
+    } catch (RuntimeException e) {
+      throw e;
     } finally {
       if (scanner != null) scanner.close();
     }
