@@ -118,3 +118,8 @@ Sessionx.vim
 tags
 # Persistent undo
 [._]*.un~
+
+# idea files
+.idea
+
+settings.xml

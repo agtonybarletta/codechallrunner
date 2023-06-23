@@ -1,16 +1,24 @@
 package it.agtonybarletta.codechallrunner;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.FileNotFoundException;
+import java.util.Collections;
 import java.util.List;
+import java.util.Scanner;
+import java.util.function.Function;
+
+import com.google.common.flogger.FluentLogger;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 public class ParserTest {
+
+  private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
   @Test
   @DisplayName("Test single string")
@@ -21,17 +29,15 @@ public class ParserTest {
           .addInput(new SingleInput<String>(Input.Mappers.stringMapper))
           .build();
 
-        List<List<Object>> inputs = runner.getInput(0);
+        List<?> inputs = runner.getInput(0);
         assertEquals(inputs.size(), 1);
-        List<Object> input = inputs.get(0);
-        assertEquals(input.size(), 1);
-        String s = (String) input.get(0);
+        String s = (String) inputs.get(0);
         assertEquals(s, "string-without-spaces");
     } catch( Exception e) {
-      fail("Test single string failed with exception "+ e.getMessage());
+      fail(e);
     }
   }
-
+  
   @Test
   @DisplayName("Test single string comma separated")
   public void testSingleStringCommaSeparated() {
@@ -43,18 +49,16 @@ public class ParserTest {
           .addInput(new SingleInput<String>(",", Input.Mappers.stringMapper))
           .build();
 
-        List<List<Object>> inputs = runner.getInput(0);
-        assertEquals(inputs.size(), 1);
-        List<Object> input = inputs.get(0);
-        assertEquals(input.size(), 3);
-        String s = (String) input.get(0);
+        List<?> inputs = runner.getInput(0);
+        assertEquals(inputs.size(), 3);
+        String s = (String) inputs.get(0);
         assertEquals(s, "string with");
-        s = (String) input.get(1);
+        s = (String) inputs.get(1);
         assertEquals(s, "comma separated");
-        s = (String) input.get(2);
+        s = (String) inputs.get(2);
         assertEquals(s, "values");
     } catch( Exception e) {
-      fail("Test single string comma separated failed with exception "+ e.getMessage());
+      fail(e);
     }
   }
 
@@ -68,19 +72,16 @@ public class ParserTest {
           .addInput(new SingleInput<String>(Input.Mappers.stringMapper))
           .build();
 
-        List<List<Object>> inputs = runner.getInput(0);
-        assertEquals(inputs.size(), 1);
-        List<Object> input = inputs.get(0);
-        assertEquals(input.size(), 2);
-        String s = (String) input.get(0);
+        List<?> inputs = runner.getInput(0);
+        assertEquals(inputs.size(), 2);
+        String s = (String) inputs.get(0);
         assertEquals(s, "string-without-spaces");
-        String s2 = (String) input.get(1);
+        String s2 = (String) inputs.get(1);
         assertEquals(s2, "string with spaces");
     } catch( Exception e) {
-      fail("Test single string failed with exception "+ e.getMessage());
+      fail(e);
     }
   }
-
 
   @Test
   @DisplayName("Test multiple testCases")
@@ -91,28 +92,24 @@ public class ParserTest {
           .addInput(new SingleInput<String>(Input.Mappers.stringMapper))
           .build();
 
-        List<List<Object>> inputsTestCase1 = runner.getInput(0);
+        List<?> inputsTestCase1 = runner.getInput(0);
         assertEquals(inputsTestCase1.size(), 1);
-        List<Object> input = inputsTestCase1.get(0);
-        assertEquals(input.size(), 1);
-        String s = (String) input.get(0);
+        String s = (String) inputsTestCase1.get(0);
         assertEquals(s, "string-without-spaces");
         
-        List<List<Object>> inputsTestCase2 = runner.getInput(1);
-        assertEquals(inputsTestCase2 .size(), 1);
-        List<Object> inputTestCase2 = inputsTestCase2.get(0);
-        assertEquals(input.size(), 1);
-        String s2 = (String) inputTestCase2.get(0);
+        List<?> inputsTestCase2 = runner.getInput(1);
+        assertEquals(inputsTestCase2.size(), 1);
+        String s2 = (String) inputsTestCase2.get(0);
         assertEquals(s2, "string from another file");
 
         try{
-          List<List<Object>> inputs3 = runner.getInput(2);
+          List<?> inputs3 = runner.getInput(2);
           fail("Exception FileNotFoundException not thrown");
         } catch (FileNotFoundException e) {
 
         }
     } catch( Exception e) {
-      fail("Test multiple testcases failed with exception "+ e.getMessage());
+      fail(e);
     }
   }
 
@@ -129,69 +126,49 @@ public class ParserTest {
         .addInput(new SingleInput<String>(Input.Mappers.stringMapper))
         .build();
 
-        List<List<Object>> inputs = runner.getInput(0);
-        assertEquals(inputs.size(), 2);
+        List<?> inputs = runner.getInput(0);
+        assertEquals(inputs.size(), 3);
 
-        List<Object> input1 = inputs.get(0);
-        assertEquals(input1.size(), 1);
-
-        String s = (String) input1.get(0);
+        String s = (String) inputs.get(0);
         assertEquals(s, "string-without-spaces");
 
-        List<Object> input2 = inputs.get(1);
-        assertEquals(input2.size(), 2);
-
-        String s1 = (String) input2.get(0);
+        String s1 = (String) inputs.get(1);
         assertEquals(s1, "string-without-spaces");
 
-        String s2 = (String) input2.get(1);
+        String s2 = (String) inputs.get(2);
         assertEquals(s2, "string with spaces");
 
     } catch( Exception e) {
-      fail("Test single string failed with exception "+ e.getMessage());
+      fail(e);
     }
   }
-
 
   @Test
   @DisplayName("Test terminator space")
   public void testTerminatorSpace() {
-    // TODOOO
     try{
         CodeChallRunner runner = new CodeChallRunnerBuilder()
-          .addFile("inputMultipleStrings1")
-          .addInput(new SingleInput<String>(Input.Mappers.stringMapper))
-          .addInput(new SingleInput<String>(Input.Mappers.stringMapper))
+          .addFile("inputSingleString1")
+          .addInput(new SingleInput<String>(" ", Input.Mappers.stringMapper))
+          .addInput(new SingleInput<String>(" ", Input.Mappers.stringMapper))
+          .addInput(new SingleInput<String>(" ", Input.Mappers.stringMapper))
+          .addInput(new SingleInput<String>(" ", Input.Mappers.stringMapper))
           .build();
 
-        List<List<Object>> inputs = runner.getInput(0);
-        assertEquals(inputs.size(), 1);
-        List<Object> input = inputs.get(0);
-        assertEquals(input.size(), 2);
-        String s = (String) input.get(0);
-        assertEquals(s, "string-without-spaces");
-        String s2 = (String) input.get(1);
-        assertEquals(s2, "string with spaces");
+        List<?> inputs = runner.getInput(1);
+        assertEquals(inputs.size(), 4);
+        String s = (String) inputs.get(0);
+        assertEquals(s, "string");
+        s = (String) inputs.get(1);
+        assertEquals(s, "from");
+        s = (String) inputs.get(2);
+        assertEquals(s, "another");
+        s = (String) inputs.get(3);
+        assertEquals(s, "file");
     } catch( Exception e) {
       fail("Test single string failed with exception "+ e.getMessage());
     }
   }
-
-  /*
-  @Test
-  @DisplayName("Test parsing error")
-  public void testParsingError() {
-    try{
-      CodeChallRunner runner = new CodeChallRunner();
-      runner.addFile("inputSingleStrings2")
-        .addInput(new SingleInput<String>(Input.Mappers.stringMapper))
-        .parse();
-      fail("Parser should have returned error because no input was provided");
-    } catch( Exception e) {
-      
-    }
-  }
-  */
 
 
   /*
@@ -206,11 +183,9 @@ public class ParserTest {
           .addInput(new SingleInput<Integer>(Input.Mappers.intMapper))
           .build();
 
-        List<List<Object>> inputs = runner.getInput(0);
+        List<?> inputs = runner.getInput(0);
         assertEquals(inputs.size(), 1);
-        List<Object> input = inputs.get(0);
-        assertEquals(input.size(), 1);
-        Integer i = (Integer) input.get(0);
+        Integer i = (Integer) inputs.get(0);
         assertEquals(i, -217);
     } catch( Exception e) {
       fail("Test single integer failed with exception "+ e.getMessage());
@@ -227,7 +202,7 @@ public class ParserTest {
           .build();
 
         try{
-          List<List<Object>> inputs = runner.getInput(0);
+          List<?> inputs = runner.getInput(0);
           fail("Exception NumberFormatException not thrown");
         } catch (NumberFormatException e) {
 
@@ -249,16 +224,190 @@ public class ParserTest {
           .addInput(new SingleInteger())
           .build();
 
-        List<List<Object>> inputs = runner.getInput(0);
+        List<?> inputs = runner.getInput(0);
         assertEquals(inputs.size(), 2);
-        List<Object> input = inputs.get(0);
-        assertEquals(input.size(), 1);
-        assertEquals((String)input.get(0), "string-without-spaces");
-        input = inputs.get(1);
-        Integer i = (Integer) input.get(0);
+        assertEquals((String)inputs.get(0), "string-without-spaces");
+        Integer i = (Integer) inputs.get(1);
         assertEquals(i, -217);
     } catch( Exception e) {
       fail("Test specific single input failed with exception: "+ e.getMessage());
     }
   }
+  @Test
+  @DisplayName("Test list of strings")
+  public void testListOfStrings() {
+    try{
+        CodeChallRunner runner = new CodeChallRunnerBuilder()
+          .addFile("inputListStrings")
+          .addInput(new ListInput<String>(new SingleString(), Input.NEW_LINE, "", ""))
+          .build();
+
+        List<?> inputs = runner.getInput(0);
+        assertEquals(inputs.size(), 1);
+        List<String> list = (List<String>) inputs.get(0);
+        assertEquals(list.get(0), "string 1");
+        assertEquals(list.get(1), "string 2");
+        assertEquals(list.get(2), "string 3");
+        assertEquals(list.get(3), "string 4");
+    } catch( Exception e) {
+      fail(e);
+    }
+  }
+
+  @Test
+  @DisplayName("Test list of integers")
+  public void testListOfIntegers() {
+    try{
+        CodeChallRunner runner = new CodeChallRunnerBuilder()
+          .addFile("inputListIntegers")
+          .addInput(new ListInput<Integer>(new SingleInteger(), ",", "", ""))
+          .build();
+
+        List<?> inputs = runner.getInput(0);
+        assertEquals(inputs.size(), 1);
+        List<?> list = (List<?>) inputs.get(0);
+        assertEquals(list.size(), 6);
+        assertEquals(list.get(0), 1);
+        assertEquals(list.get(1), 2);
+        assertEquals(list.get(2), 3);
+        assertEquals(list.get(3), 4);
+        assertEquals(list.get(4), 5);
+        assertEquals(list.get(5), -217);
+    } catch( Exception e) {
+      fail(e);
+    }
+  }
+
+  @Test
+  @DisplayName("Test list with prefix and postfix")
+  public void testListPrefixAndPostfix() {
+    try{
+        CodeChallRunner runner = new CodeChallRunnerBuilder()
+          .addFile("inputListIntegersWithSquareBrakets")
+          .addInput(new ListInput<Integer>(new SingleInteger(), ",", "\\[", "\\]"))
+          .build();
+
+        List<?> inputs = runner.getInput(0);
+        assertEquals(inputs.size(), 1);
+        List<?> list = (List<?>) inputs.get(0);
+        assertEquals(list.size(), 6);
+        assertEquals(list.get(0), 6);
+        assertEquals(list.get(1), 7);
+        assertEquals(list.get(2), 8);
+        assertEquals(list.get(3), 9);
+        assertEquals(list.get(4), 10);
+        assertEquals(list.get(5), -217);
+    } catch( Exception e) {
+      fail(e);
+    }
+  }
+
+  @Test
+  @DisplayName("Test target Integer")
+  public void testTargetInteger() {
+    try{
+        CodeChallRunner runner = new CodeChallRunnerBuilder()
+          .addFile("inputListIntegersWithSquareBrakets")
+          .addInput(new ListInput<Integer>(new SingleInteger(), ",", "\\[", "\\]"))
+          .addTargetFile("targetSumList")
+          .addTarget(new SingleInteger())
+          .build();
+
+        List<?> inputs = runner.getInput(0);
+        assertEquals(inputs.size(), 1);
+        List<?> list = (List<?>) inputs.get(0);
+        assertEquals(list.size(), 6);
+        assertEquals(list.get(0), 6);
+        assertEquals(list.get(1), 7);
+        assertEquals(list.get(2), 8);
+        assertEquals(list.get(3), 9);
+        assertEquals(list.get(4), 10);
+        assertEquals(list.get(5), -217);
+
+        Integer target = (Integer) runner.getTarget(0);
+        assertEquals(target, -177);
+    } catch( Exception e) {
+      fail(e);
+    }
+  }
+
+  @Test
+  @DisplayName("Test single run")
+  public void testSingleRun() {
+    try{
+        CodeChallRunner runner = new CodeChallRunnerBuilder()
+          .addFile("inputListIntegersWithSquareBrakets")
+          .addInput(new ListInput<Integer>(new SingleInteger(), ",", "\\[", "\\]"))
+          .addTargetFile("targetSumList")
+          .addTarget(new SingleInteger())
+          .build();
+
+        List<?> inputs = runner.getInput(0);
+        assertEquals(inputs.size(), 1);
+        List<?> list = (List<?>) inputs.get(0);
+        assertEquals(list.size(), 6);
+        assertEquals(list.get(0), 6);
+        assertEquals(list.get(1), 7);
+        assertEquals(list.get(2), 8);
+        assertEquals(list.get(3), 9);
+        assertEquals(list.get(4), 10);
+        assertEquals(list.get(5), -217);
+
+        Integer target = (Integer) runner.getTarget(0);
+        assertEquals(target, -177);
+
+        Function<List<List<Integer>>, Integer> f = (a) -> {
+          List<Integer> l = (List<Integer>) a.get(0);
+          Integer result = 0;
+          for( Integer i : l) {
+            result += i;
+          }
+          return result;
+        };
+        assertTrue(runner.testSingleTestCase(0, f).booleanValue());
+    } catch( Exception e) {
+      fail(e);
+    }
+  }
+
+
+  @Test
+  @DisplayName("Test single run")
+  public void testSingleRunFail() {
+    try{
+        CodeChallRunner runner = new CodeChallRunnerBuilder()
+          .addFile("inputListIntegersWithSquareBrakets")
+          .addInput(new ListInput<Integer>(new SingleInteger(), ",", "\\[", "\\]"))
+          .addTargetFile("inputSingleInteger")
+          .addTarget(new SingleInteger())
+          .build();
+
+        List<?> inputs = runner.getInput(0);
+        assertEquals(inputs.size(), 1);
+        List<?> list = (List<?>) inputs.get(0);
+        assertEquals(list.size(), 6);
+        assertEquals(list.get(0), 6);
+        assertEquals(list.get(1), 7);
+        assertEquals(list.get(2), 8);
+        assertEquals(list.get(3), 9);
+        assertEquals(list.get(4), 10);
+        assertEquals(list.get(5), -217);
+
+        Integer target = (Integer) runner.getTarget(0);
+        assertEquals(target, -217);
+
+        Function<List<List<Integer>>, Integer> f = (a) -> {
+          List<Integer> l = (List<Integer>) a.get(0);
+          Integer result = 0;
+          for( Integer i : l) {
+            result += i;
+          }
+          return result;
+        };
+        assertFalse(runner.testSingleTestCase(0, f).booleanValue());
+    } catch( Exception e) {
+      fail(e);
+    }
+  }
+
 }

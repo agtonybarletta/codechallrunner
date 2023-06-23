@@ -4,56 +4,76 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Pattern;
+
+import javax.management.RuntimeMBeanException;
 
 import com.google.common.flogger.FluentLogger;
 
-public class ListInput<T extends Object> extends Input{
+public class ListInput<T> extends InputDecorator<List<T>, T>{
 
 	private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
-
 	private String separator;
-	private List<T> data;
-	private Class<? extends T> clazz;
-	public ListInput(String terminator, String separator, Class<? extends T> clazz) {
+    private String prefix;
+    private String postfix;
+
+	public ListInput(InputI<T> input, String separator, String prefix, String postfix) {
+        super(input);
 		this.separator = separator;
-		this.data = new LinkedList<>();
-		this.clazz = clazz;
+        this.prefix = prefix;
+        this.postfix = postfix;
 	}
 	
-	public List<List<T>> readData(Scanner scanner){
+  public List<T> readData(Scanner scanner){
+    //System.out.println("reading data for ListInput, separator: %s, prefix %s, postfix %s".formatted(this.separator, this.prefix, this.postfix));
+    Logger.getLogger("it.agtonybarletta.codechallrunner").setLevel(Level.OFF);
+    Pattern oldDelimiter = scanner.delimiter();	
 
-		logger.atInfo().log("reading data for ListInput of type %s, terminator %s, delimiter %s", this.clazz.toString(),this.terminator, this.separator);
-		Pattern oldDelimiter = scanner.delimiter();	
-		String listData = scanner.useDelimiter(Pattern.MULTILINE + this.terminator).next();
-		logger.atInfo().log(" string containing the list %s", listData);
-	
-		Scanner scannerList = new Scanner(listData);
-		scannerList.useDelimiter(this.separator);
-		while(scannerList.hasNext()){
-			if(clazz.isInstance(new String())){
-				String s = scannerList.next();
-				logger.atInfo().log("parsing string %s", s);
-				this.data.add((T) s);
-			}
-			if(clazz.isInstance(Integer.class)){
-				Integer i = Integer.valueOf( scannerList.next());
-				logger.atInfo().log("parsing integer %s", i);
-				this.data.add((T) i );
-			}
-		}
-		scannerList.close();
+    if (!this.prefix.equals("")) {
+      logger.atInfo().log("entered prefix skipping");
+      scanner.skip(this.prefix);
+    } else {
+      logger.atInfo().log("not entered prefix skipping");
+    }
 
-		if(scanner.hasNext())scanner.skip(this.terminator);
-		scanner.useDelimiter(oldDelimiter);
+    String listData;
+    if(!this.postfix.equals("")){
+      logger.atInfo().log("entered postfix skipping");
+      scanner.useDelimiter(this.postfix);
+      logger.atInfo().log("has postfix");
+      listData = scanner.next();  
+    } else {
+      logger.atInfo().log("not has postfix");
+      scanner.useDelimiter("\\Z");
+      listData = scanner.next();
+    }
 
-		logger.atInfo().log("end readData. data: %s", this.toString());
-        return null;
-	}
+    logger.atInfo().log("string containing the list---\n%s\n---", listData.replace("\n", "\\n"));
+    //System.out.println("string containing the list "+ listData );
+
+    Scanner scannerList = new Scanner(listData);
+    scannerList.useDelimiter(this.separator);
+    List<T> ret = new LinkedList<>();
+    while(scannerList.hasNext()){
+      this.input.setTerminator(this.separator);
+      T data = this.input.readData(scannerList);
+      ret.add(data);
+      //System.out.println(ret);
+    }
+    scannerList.close();
+
+    scanner.useDelimiter(oldDelimiter);
+
+    logger.atInfo().log("end readData. data: %s", ret);
+    return ret;
+  }
 
 	public String toString(){
-		return "{ terminator: "+ this.terminator + ", separator: "+ this.separator + ", data: "+ this.data.toString()+ " }";
+		//return "{ terminator: "+ this.terminator + ", separator: "+ this.separator + ", data: "+ this.data.toString()+ " }";
+        return "";
 	}
 		
 }

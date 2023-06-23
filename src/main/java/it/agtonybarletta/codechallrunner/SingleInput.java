@@ -20,8 +20,8 @@ public class SingleInput<T> extends Input<T>{
   @Override
   public T readData(Scanner scanner) {
     T data;
-    try{
-      scanner = scanner.useDelimiter(this.terminator);
+    try {
+      scanner.useDelimiter(this.terminator);
       String rawString = scanner.next();
       rawString = rawString.trim();
       data = this.mapper.apply(rawString);

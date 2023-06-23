@@ -4,12 +4,26 @@
   <groupId>it.agtonybarletta.codechallrunner</groupId>
   <artifactId>codechallrunner</artifactId>
   <packaging>jar</packaging>
-  <version>0.0.2</version>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>13</source>
+                    <target>13</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+    <version>0.0.3</version>
   <name>codechallrunner</name>
   <url>http://maven.apache.org</url>
   <properties>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
+	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 </properties>
   <dependencies>
 	<!-- https://mvnrepository.com/artifact/com.google.flogger/flogger -->

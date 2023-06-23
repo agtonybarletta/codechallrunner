@@ -8,23 +8,31 @@ import java.util.Map;
 /* Builder */
 public class CodeChallRunnerBuilder{
 
-  private List<String> files;
+  private List<String> inputFiles;
+  private String targetFile;
   private String currentFile = null;
-  private Map<String,List<Input<?>>> fileInputMap;
+  private Map<String,List<InputI<?>>> fileInputMap;
 
   public CodeChallRunnerBuilder() {
-    this.files = new LinkedList<>();
+    this.inputFiles = new LinkedList<>();
     this.fileInputMap = new HashMap<>(); 
   }
 
   public CodeChallRunnerBuilder addFile(String filePrefix) {
-    this.files.add(filePrefix);				
+    this.inputFiles.add(filePrefix);				
     this.currentFile = filePrefix;
     this.fileInputMap.put(filePrefix, new LinkedList<>());
     return this;
   }
 
-  public CodeChallRunnerBuilder addInput(Input<?> input) {
+  public CodeChallRunnerBuilder addTargetFile(String filePrefix) {
+    this.targetFile = filePrefix;
+    this.currentFile = filePrefix;
+    this.fileInputMap.put(filePrefix, new LinkedList<>());
+    return this;
+  }
+
+  public CodeChallRunnerBuilder addInput(InputI<?> input) {
       if(this.currentFile == null){
           throw new RuntimeException("Cannot add input before adding a file. Call addFile then addInput");
       }
@@ -32,15 +40,15 @@ public class CodeChallRunnerBuilder{
       return this;
   }
 
-    public CodeChallRunnerBuilder addOutput(Input<?> output) {
+    public CodeChallRunnerBuilder addTarget(Input<?> target) {
         if(this.currentFile == null){
             throw new RuntimeException("Cannot add input before adding a file. Call addFile then addInput");
         }
-        //this.fileInputMap.get(this.currentFile).add(output);
+        this.fileInputMap.get(this.currentFile).add(target);
         return this;
     }
 
     public CodeChallRunner build() {
-      return new CodeChallRunner(this.files, this.fileInputMap);
+      return new CodeChallRunner(this.inputFiles, this.fileInputMap, this.targetFile);
     }
 }
