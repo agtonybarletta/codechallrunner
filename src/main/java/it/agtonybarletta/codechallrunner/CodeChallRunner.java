@@ -2,6 +2,11 @@ package it.agtonybarletta.codechallrunner;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -58,7 +63,71 @@ public class CodeChallRunner {
      return this.getFileInput(testCaseNumber, Arrays.asList(this.targetFile)).get(0);
   }
 
-  public Boolean testSingleTestCase(Integer testCaseNumber, Function f) {
+  public Boolean test(Object caller, String method) {
+    
+    int i = 0;
+    boolean res = true;
+    try{
+      while(true) {
+        res &= testSingleTestCase(i, caller, method);
+        i++;
+      }
+    } catch ( FileNotFoundException e) {
+      if (i == 0) {
+        throw new RuntimeException("No file found");
+      }
+    }
+    return res;
+
+  }
+
+  public Boolean testSingleTestCase(Integer testCaseNumber, Object caller, String methodName) throws NumberFormatException, FileNotFoundException {
+  
+    try {
+      Method[] methods = caller.getClass().getMethods();
+      Method m = null;
+      for (int i = 0; i < methods.length; i++) {
+        if (methods[i].getName().equals(methodName)) {
+          if (m == null) {
+            m = methods[i];
+          } else {
+            throw new RuntimeException("more than one method");
+          }
+        }
+      }
+      if (m == null) {
+        throw new RuntimeException("No method found");
+      }
+      List<?> input = this.getInput(testCaseNumber);
+      Object target = this.getTarget(testCaseNumber);
+      Class<?>[] types = m.getParameterTypes();
+
+      if (types.length != input.size()) {
+        throw new RuntimeException("method input missmatch");
+      }
+
+      Object[] parameters = new Object[types.length];
+      for (int i = 0; i < types.length; i++) {
+
+        //System.out.println("1: " + input.get(i).getClass());
+        //System.out.println("2: " + types[i]);
+
+        if (types[i].isAssignableFrom(input.get(i).getClass())) {
+          parameters[i] = input.get(i);
+        } else {
+          throw new  RuntimeException("cannot cast " + input.get(i).getClass() + " to " + types[i] );
+        }
+      }
+      Object ret = m.invoke(caller,parameters);
+      return ret.equals(target);
+    } catch (IllegalAccessException | InvocationTargetException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+      return false;
+    }
+
+  }
+  /*public Boolean testSingleTestCase(Integer testCaseNumber, Function f) {
      
     try {
 		List<?> input = this.getInput(testCaseNumber);
@@ -74,5 +143,6 @@ public class CodeChallRunner {
 	}
     return false;
   }
+  */
 
 }

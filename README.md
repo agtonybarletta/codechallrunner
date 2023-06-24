@@ -12,9 +12,12 @@ Finally it can run you own function against defined tests
 - [X] create Integer Input tests
 - [X] create SingleIntegerInput without mapper
 - [X] create SingleStringInput without mapper
-- [ ] create empty new line test
-- [ ] create list of values test
-- [ ] create list of list of values test
-- [ ] create getAllInputs
-- [ ] create runner test all
-- [ ] look into auto boxing/unboxing
+- [X] create empty new line test
+- [X] create list of values test
+- [ ] create list of list of values test (matrix)
+- [ ] look into auto boxing/unboxing for test function
+- [ ] test custom class mapper for single input
+- [ ] refactor & clean
+- [ ] logging test
+- [X] create getAllInputs
+- [X] create runner test all
