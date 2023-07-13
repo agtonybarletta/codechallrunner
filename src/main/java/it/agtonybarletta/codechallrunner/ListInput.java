@@ -29,41 +29,67 @@ public class ListInput<T> extends InputDecorator<List<T>, T>{
 	
   public List<T> readData(Scanner scanner){
     //System.out.println("reading data for ListInput, separator: %s, prefix %s, postfix %s".formatted(this.separator, this.prefix, this.postfix));
-    Logger.getLogger("it.agtonybarletta.codechallrunner").setLevel(Level.OFF);
+    Logger.getLogger("it.agtonybarletta.codechallrunner").setLevel(Level.INFO);
     Pattern oldDelimiter = scanner.delimiter();	
 
     if (!this.prefix.equals("")) {
       logger.atInfo().log("entered prefix skipping");
       scanner.skip(this.prefix);
-    } else {
-      logger.atInfo().log("not entered prefix skipping");
-    }
+    } 
 
     String listData;
     if(!this.postfix.equals("")){
-      logger.atInfo().log("entered postfix skipping");
-      scanner.useDelimiter(this.postfix);
-      logger.atInfo().log("has postfix");
-      listData = scanner.next();  
-    } else {
+      //logger.atInfo().log("entered postfix skipping");
+      //scanner.useDelimiter(this.postfix);
+      //listData = scanner.next();  
+    } /*else {
       logger.atInfo().log("not has postfix");
       scanner.useDelimiter("\\Z");
       listData = scanner.next();
-    }
+    } */
 
-    logger.atInfo().log("string containing the list---\n%s\n---", listData.replace("\n", "\\n"));
+    //logger.atInfo().log("string containing the list---\n%s\n---", listData.replace("\n", "\\n"));
     //System.out.println("string containing the list "+ listData );
 
-    Scanner scannerList = new Scanner(listData);
-    scannerList.useDelimiter(this.separator);
+    //Scanner scannerList = new Scanner(listData);
+    //scannerList.useDelimiter(this.separator);
+    
+    // ALGORITM 
+    
+    // set element delimiter as an or separator | oldDelimiter
+
+    // in the input
+    // read the next pattern but keep the delimiter
+    //  https://stackoverflow.com/questions/2206378/how-to-split-a-string-but-also-keep-the-delimiters
+
+    // read the delimiter iwht hasNext
+
+    // exit if is the old delimiter
+
+    
+    // construct new scanner with this new string
+
+    // use new scanner in sub 
+    scanner.useDelimiter(this.separator);
     List<T> ret = new LinkedList<>();
-    while(scannerList.hasNext()){
-      this.input.setTerminator(this.separator);
-      T data = this.input.readData(scannerList);
+
+    this.input.setTerminator(this.separator);
+    boolean stop = false;
+    while (scanner.hasNext() && !stop) {
+      scanner.useDelimiter(oldDelimiter);
+      if( !scanner.hasNext() && scanner.hasNext(this.separator)) {
+        scanner.useDelimiter(this.separator);
+        this.input.setTerminator(this.separator);
+        logger.atInfo().log("not last ");
+      } else {
+        this.input.setTerminator(oldDelimiter.toString());
+        logger.atInfo().log("last ");
+        stop = true;
+      }
+      T data = this.input.readData(scanner);
       ret.add(data);
-      //System.out.println(ret);
     }
-    scannerList.close();
+    //scannerList.close();
 
     scanner.useDelimiter(oldDelimiter);
 
