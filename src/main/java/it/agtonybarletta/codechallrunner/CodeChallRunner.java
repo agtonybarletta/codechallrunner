@@ -42,8 +42,9 @@ public class CodeChallRunner {
 
         scanner = new Scanner(inputFile);
         for (InputI<?> i : fileInputMap.get(s)) {
-          Scanner data = scanner.useDelimiter(i.getTerminator());
-          ret.add(i.readData(data));
+          Scanner data = scanner;
+          i.readData(data);
+          ret.add(i.getData());
         }
       }
       // TODO improve readibility

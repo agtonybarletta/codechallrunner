@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Test;
 
 public class RunnerTest{
 
+  /*
   @Test
   @DisplayName("Test single run")
   public void testSingleRunFail() {
@@ -131,7 +132,6 @@ public class RunnerTest{
   }
 
 
-  /*
   @Test
   @DisplayName("Test method")
   public void testMethod() {

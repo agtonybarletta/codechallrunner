@@ -41,6 +41,7 @@ public class ParserTest {
   @Test
   @DisplayName("Test single string comma separated")
   public void testSingleStringCommaSeparated() {
+
     try{
         CodeChallRunner runner = new CodeChallRunnerBuilder()
           .addFile("inputSingleStringComma")
@@ -178,7 +179,7 @@ public class ParserTest {
   @DisplayName("Test single integer")
   public void testSingleInteger() {
     try{
-        CodeChallRunner runner = new CodeChallRunnerBuilder()
+          CodeChallRunner runner = new CodeChallRunnerBuilder()
           .addFile("inputSingleInteger")
           .addInput(new SingleInput<Integer>(Input.Mappers.intMapper))
           .build();
@@ -239,7 +240,7 @@ public class ParserTest {
     try{
         CodeChallRunner runner = new CodeChallRunnerBuilder()
           .addFile("inputListStrings")
-          .addInput(new ListInput<String>(new SingleString(), Input.NEW_LINE, "", ""))
+          .addInput(new ListInput<String>(new SingleString(), Input.NEW_LINE, null, null))
           .build();
 
         List<?> inputs = runner.getInput(0);
@@ -260,7 +261,7 @@ public class ParserTest {
     try{
         CodeChallRunner runner = new CodeChallRunnerBuilder()
           .addFile("inputListIntegers")
-          .addInput(new ListInput<Integer>(new SingleInteger(), ",", "", ""))
+          .addInput(new ListInput<Integer>(new SingleInteger(), ",", null, null))
           .build();
 
         List<?> inputs = runner.getInput(0);

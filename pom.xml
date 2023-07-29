@@ -1,58 +1,64 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>it.agtonybarletta.codechallrunner</groupId>
-  <artifactId>codechallrunner</artifactId>
-  <packaging>jar</packaging>
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>13</source>
-                    <target>13</target>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
-  <version>0.0.4</version>
-  <name>codechallrunner</name>
-  <url>http://maven.apache.org</url>
-  <properties>
-    <maven.compiler.source>1.8</maven.compiler.source>
-    <maven.compiler.target>1.8</maven.compiler.target>
-	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-</properties>
-  <dependencies>
-	<!-- https://mvnrepository.com/artifact/com.google.flogger/flogger -->
-	<dependency>
-		<groupId>com.google.flogger</groupId>
-		<artifactId>flogger</artifactId>
-		<version>0.7.4</version>
-	</dependency>
-	<dependency>
-		<groupId>com.google.flogger</groupId>
-		<artifactId>flogger-system-backend</artifactId>
-		<version>0.7.4</version>
-		<scope>runtime</scope>
-	</dependency>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>it.agtonybarletta.codechallrunner</groupId>
+	<artifactId>codechallrunner</artifactId>
+	<packaging>jar</packaging>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>13</source>
+					<target>13</target>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+	<version>0.0.4</version>
+	<name>codechallrunner</name>
+	<url>http://maven.apache.org</url>
+	<properties>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+	</properties>
+	<dependencies>
+		<!-- https://mvnrepository.com/artifact/com.google.flogger/flogger -->
+		<dependency>
+			<groupId>com.google.flogger</groupId>
+			<artifactId>flogger</artifactId>
+			<version>0.7.4</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.flogger</groupId>
+			<artifactId>flogger-system-backend</artifactId>
+			<version>0.7.4</version>
+			<scope>runtime</scope>
+		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api -->
-	<dependency>
-		<groupId>org.junit.jupiter</groupId>
-		<artifactId>junit-jupiter-api</artifactId>
-		<version>5.9.3</version>
-		<scope>test</scope>
-	</dependency>
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-api</artifactId>
+			<version>5.9.3</version>
+			<scope>test</scope>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-text -->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-text</artifactId>
+			<version>1.10.0</version>
+		</dependency>
 
-  </dependencies>
-  <distributionManagement>
-   <repository>
-     <id>github</id>
-     <name>GitHub agtonybarletta Apache Maven Packages</name>
-     <url>https://maven.pkg.github.com/agtonybarletta/codechallrunner</url>
-   </repository>
-</distributionManagement>
+
+	</dependencies>
+	<distributionManagement>
+		<repository>
+			<id>github</id>
+			<name>GitHub agtonybarletta Apache Maven Packages</name>
+			<url>https://maven.pkg.github.com/agtonybarletta/codechallrunner</url>
+		</repository>
+	</distributionManagement>
 </project>
