@@ -10,14 +10,4 @@ public abstract class InputDecorator<O, T> implements InputI<O> {
     this.input = input;
   }
 
-  @Override
-  public void setTerminator(String terminator) {
-    this.input.setTerminator(terminator);
-  }
-
-  @Override
-  public String getTerminator() {
-    return this.input.getTerminator();
-  }
-
 }

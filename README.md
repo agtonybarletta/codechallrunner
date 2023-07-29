@@ -54,17 +54,11 @@ To test the function `sumAll` you will create the following runner
 
 ## TODO
 
-- [X] create runner builder
-- [X] create Integer Input tests
-- [X] create SingleIntegerInput without mapper
-- [X] create SingleStringInput without mapper
-- [X] create empty new line test
-- [X] create list of values test
-- [ ] create list of list of values test (matrix)
+- [ ] fix loggin 
+- [ ] logging test
 - [ ] look into auto boxing/unboxing for test function
 - [ ] test custom class mapper for single input
 - [ ] refactor & clean
-- [ ] logging test
 - [ ] write readme install and usage
 - [ ] write a complete test function that identify the failed test outputing input, output and target
 - [ ] check how to call object method from static method
@@ -73,3 +67,10 @@ To test the function `sumAll` you will create the following runner
 - [ ] check auto cast Integer/int
 - [X] create getAllInputs
 - [X] create runner test all
+- [X] create runner builder
+- [X] create Integer Input tests
+- [X] create SingleIntegerInput without mapper
+- [X] create SingleStringInput without mapper
+- [X] create empty new line test
+- [X] create list of values test
+- [X] create list of list of values test (matrix)

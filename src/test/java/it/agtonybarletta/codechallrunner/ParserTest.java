@@ -240,7 +240,7 @@ public class ParserTest {
     try{
         CodeChallRunner runner = new CodeChallRunnerBuilder()
           .addFile("inputListStrings")
-          .addInput(new ListInput<String>(new SingleString(), Input.NEW_LINE, "", ""))
+          .addInput(new ListInput<String>(new SingleString(), Input.NEW_LINE, null, null))
           .build();
 
         List<?> inputs = runner.getInput(0);
@@ -261,7 +261,7 @@ public class ParserTest {
     try{
         CodeChallRunner runner = new CodeChallRunnerBuilder()
           .addFile("inputListIntegers")
-          .addInput(new ListInput<Integer>(new SingleInteger(), ",", "", ""))
+          .addInput(new ListInput<Integer>(new SingleInteger(), ",", null, null))
           .build();
 
         List<?> inputs = runner.getInput(0);
