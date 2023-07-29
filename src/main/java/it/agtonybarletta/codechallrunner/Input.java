@@ -61,7 +61,18 @@ public abstract class Input<T> implements InputI<T>{
   }
 
   protected String getScannerDelimiter() {
-    return this.terminators.stream().map( s -> "(?<=" + StringEscapeUtils.escapeJava(s) + ")|(?=" + StringEscapeUtils.escapeJava(s) + ")" ).collect(Collectors.joining("|"));
+    return this.terminators.stream()
+    .map( s -> escapeRegexString(s))
+    .map( s -> "(?<=" + s + ")|(?=" + s + ")" ).collect(Collectors.joining("|"));
+  }
+  protected String escapeRegexString(String s) {
+    if (s == null) return null;
+    String toBeEscape = "\\.[]{}()*+-=!?^$|";
+    for( char c : toBeEscape.toCharArray() ) {
+      s = s.replace(Character.toString(c), "\\" + c);
+    }
+    System.out.println(s);
+    return s;
   }
 
 }

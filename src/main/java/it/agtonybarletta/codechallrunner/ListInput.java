@@ -54,7 +54,7 @@ public class ListInput<T> extends Input<List<T>> {
 
       if (this.prefix != null) {
         logger.atInfo().log("entered prefix skipping");
-        scanner.skip(this.prefix);
+        scanner.skip(this.escapeRegexString(this.prefix));
       }
 
       //this.input.addTerminator(oldDelimiter.toString());
@@ -89,8 +89,8 @@ public class ListInput<T> extends Input<List<T>> {
             // || this.terminators.contains(StringEscapeUtils.escapeJava(inputTerminator))
         ) {
           
-          logger.atInfo().log("enterd stopping condition with: "+ this.terminators + " " + inputTerminator + " " + this.postfix);
-          if (this.postfix != null && inputTerminator.equals(this.postfix)) {
+          logger.atInfo().log("enterd stopping condition with: "+ this.terminators + ", " + inputTerminator + ", " + this.postfix);
+          if (this.postfix != null && inputTerminator.equals(this.escapeRegexString(this.postfix))) {
             throw new RuntimeException("input ended but postfix " + this.postfix + " expected");
           } else {
             logger.atInfo().log("stopping because terminator equal to postfix" + inputTerminator);

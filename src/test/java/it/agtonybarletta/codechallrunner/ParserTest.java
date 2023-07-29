@@ -285,7 +285,7 @@ public class ParserTest {
     try{
         CodeChallRunner runner = new CodeChallRunnerBuilder()
           .addFile("inputListIntegersWithSquareBrakets")
-          .addInput(new ListInput<Integer>(new SingleInteger(), ",", "\\[", "\\]"))
+          .addInput(new ListInput<Integer>(new SingleInteger(), ",", "[", "]"))
           .build();
 
         List<?> inputs = runner.getInput(0);
@@ -309,7 +309,7 @@ public class ParserTest {
     try{
         CodeChallRunner runner = new CodeChallRunnerBuilder()
           .addFile("inputListIntegersWithSquareBrakets")
-          .addInput(new ListInput<Integer>(new SingleInteger(), ",", "\\[", "\\]"))
+          .addInput(new ListInput<Integer>(new SingleInteger(), ",", "[", "]"))
           .addTargetFile("targetSumList")
           .addTarget(new SingleInteger())
           .build();
