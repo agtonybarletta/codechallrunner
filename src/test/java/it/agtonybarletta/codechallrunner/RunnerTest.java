@@ -15,14 +15,14 @@ import org.junit.jupiter.api.Test;
 
 public class RunnerTest{
 
-  /*
+
   @Test
   @DisplayName("Test single run")
   public void testSingleRunFail() {
     try{
         CodeChallRunner runner = new CodeChallRunnerBuilder()
           .addFile("inputListIntegersWithSquareBrakets")
-          .addInput(new ListInput<Integer>(new SingleInteger(), ",", "\\[", "\\]"))
+          .addInput(new ListInput<Integer>(new SingleInteger(), ",", "[", "]"))
           .addTargetFile("inputSingleInteger")
           .addTarget(new SingleInteger())
           .build();
@@ -47,13 +47,14 @@ public class RunnerTest{
     }
   }
 
+
   @Test
   @DisplayName("Test all testcases")
   public void testAllTestCase() {
     try{
         CodeChallRunner runner = new CodeChallRunnerBuilder()
           .addFile("inputListSum")
-          .addInput(new ListInput<Integer>(new SingleInteger(), " ", "", ""))
+          .addInput(new ListInput<Integer>(new SingleInteger(), " ", null, null))
           .addTargetFile("targetListSum")
           .addTarget(new SingleInteger())
           .build();
@@ -66,13 +67,13 @@ public class RunnerTest{
     }
   }
 
-  @Test
+  /*@Test
   @DisplayName("Test all testcases false")
   public void testAllTestCaseFalse() {
     try{
         CodeChallRunner runner = new CodeChallRunnerBuilder()
           .addFile("inputListSum")
-          .addInput(new ListInput<Integer>(new SingleInteger(), " ", "", Input.NEW_LINE))
+          .addInput(new ListInput<Integer>(new SingleInteger(), " ", null, Input.NEW_LINE))
           .addTargetFile("targetListSum")
           .addTarget(new SingleInteger())
           .build();
@@ -83,7 +84,7 @@ public class RunnerTest{
     } catch( Exception e) {
       fail(e);
     }
-  }
+  }*/
 
   @Test
   @DisplayName("Test all testcases no file found")
@@ -91,7 +92,7 @@ public class RunnerTest{
     try{
         CodeChallRunner runner = new CodeChallRunnerBuilder()
           .addFile("nonExistingFile")
-          .addInput(new ListInput<Integer>(new SingleInteger(), " ", "", Input.NEW_LINE))
+          .addInput(new ListInput<Integer>(new SingleInteger(), " ", null, Input.NEW_LINE))
           .addTargetFile("targetListSum")
           .addTarget(new SingleInteger())
           .build();
@@ -108,7 +109,7 @@ public class RunnerTest{
     try{
         CodeChallRunner runner = new CodeChallRunnerBuilder()
           .addFile("inputListSum")
-          .addInput(new ListInput<Integer>(new SingleInteger(), " ", "", Input.NEW_LINE))
+          .addInput(new ListInput<Integer>(new SingleInteger(), " ", null, Input.NEW_LINE))
           .addTargetFile("nonExistingTargetFile")
           .addTarget(new SingleInteger())
           .build();
@@ -119,17 +120,7 @@ public class RunnerTest{
     }
   }
 
-  public Integer sumAll(List<Integer> nums) {
-    return nums.stream().mapToInt(Integer::valueOf).sum();
-  }
 
-  public Integer multiplyAll(List<Integer> nums) {
-    int ret = 1;
-    for (int i : nums) {
-      ret *= i;
-    }
-    return ret;
-  }
 
 
   @Test
@@ -138,7 +129,7 @@ public class RunnerTest{
     try{
         CodeChallRunner runner = new CodeChallRunnerBuilder()
           .addFile("inputListIntegersWithSquareBrakets")
-          .addInput(new ListInput<Integer>(new SingleInteger(), ",", "\\[", "\\]"))
+          .addInput(new ListInput<Integer>(new SingleInteger(), ",", "[", "]"))
           .addTargetFile("inputSingleInteger")
           .addTarget(new SingleInteger())
           .build();
@@ -157,11 +148,22 @@ public class RunnerTest{
         Integer target = (Integer) runner.getTarget(0);
         assertEquals(target, -217);
 
-        assertFalse(runner.testSingleTestCaseMethod(0, this, "sumAll").booleanValue());
+        assertFalse(runner.testSingleTestCase(0, this, "sumAll").booleanValue());
     } catch( Exception e) {
       fail(e);
     }
   }
-  */
+
+    public Integer sumAll(List<Integer> nums) {
+        return nums.stream().mapToInt(Integer::valueOf).sum();
+    }
+
+    public Integer multiplyAll(List<Integer> nums) {
+        int ret = 1;
+        for (int i : nums) {
+            ret *= i;
+        }
+        return ret;
+    }
 
 }

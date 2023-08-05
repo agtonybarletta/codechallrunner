@@ -1,5 +1,7 @@
 package it.agtonybarletta.codechallrunner;
 
+import com.google.common.flogger.FluentLogger;
+
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
@@ -13,8 +15,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.function.Function;
+import java.util.logging.LogManager;
+import java.util.logging.SimpleFormatter;
+import java.util.logging.XMLFormatter;
 
 public class CodeChallRunner {
+
+  private static final FluentLogger logger = FluentLogger.forEnclosingClass();
+
 
   private List<String> inputFiles;
   private String targetFile;
@@ -83,7 +91,9 @@ public class CodeChallRunner {
   }
 
   public Boolean testSingleTestCase(Integer testCaseNumber, Object caller, String methodName) throws NumberFormatException, FileNotFoundException {
-  
+
+    logger.atInfo().log(this.getClass().getName());
+    Arrays.stream(LogManager.getLogManager().getLogger(this.getClass().getName()).getHandlers()).forEach(h -> h.setFormatter(new XMLFormatter()));
     try {
       Method[] methods = caller.getClass().getMethods();
       Method m = null;
@@ -99,6 +109,8 @@ public class CodeChallRunner {
       if (m == null) {
         throw new RuntimeException("No method found");
       }
+      logger.atInfo().log("Test case #" + testCaseNumber);
+
       List<?> input = this.getInput(testCaseNumber);
       Object target = this.getTarget(testCaseNumber);
       Class<?>[] types = m.getParameterTypes();
@@ -119,8 +131,19 @@ public class CodeChallRunner {
           throw new  RuntimeException("cannot cast " + input.get(i).getClass() + " to " + types[i] );
         }
       }
+      logger.atInfo().log("Inputs: " + Arrays.toString(parameters));
+      logger.atInfo().log("Expected: " + target);
+
       Object ret = m.invoke(caller,parameters);
-      return ret.equals(target);
+      logger.atInfo().log("Got: " + ret);
+      boolean result = ret.equals(target);
+      if (result) {
+        logger.atInfo().log("SUCCESS");
+      } else {
+        logger.atSevere().log("FAIL");
+
+      }
+      return result;
     } catch (IllegalAccessException | InvocationTargetException e) {
       // TODO Auto-generated catch block
       e.printStackTrace();

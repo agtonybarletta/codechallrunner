@@ -1,76 +1,107 @@
 # CodeChallRunner
 
-*CodeChallRunner* is a simple library that provide a clean environment to run on your machine
-- coding challenges
-- copetitive programming problems 
-- coding interview questions
+## About
 
-It offers a clean way to define input and output from recurrent formats (String, Integer, List, Matrix)
+_CodeChallRunner_ is a Java library that provides a local environment to run and test coding chanllenges.
 
-## Use
+It emulates what coding challenges websites do ( e.g. leetcode, harkerrank, codeforces)
 
-Add this to your Maven configuration 
+After you define your input sources, input, and targets, you can run your own method/funciton against the input and validate its accuracy.
+
+It is flexible enought to accept most coding chellenges inputs.
+
+Features:
+
+- data source definition ( files, strings )
+- definition of single or colections of various inputs ( Integer, Double, String, List<?>, List<List<?>> etc)
+- automatic code runner
+
+## How to use it
+
+Add this to your Maven configuration
 
 ```xml
-  <repositories>
-		<repository>
-			<id>github-repo</id>
-			<name>Github repo</name>
-          	<url>https://maven.pkg.github.com/agtonybarletta/codechallrunner</url>
-		</repository>
-	</repositories>
-  <dependencies>
-	<dependency>
-	  <groupId>it.agtonybarletta.codechallrunner</groupId>
-	  <artifactId>codechallrunner</artifactId>
-	  <version>X.Y.Z</version>
-	</dependency>
-  </dependencies>
+    <repositories>
+        <repository>
+            <id>github-repo</id>
+            <name>Github repo</name>
+            <url>https://maven.pkg.github.com/agtonybarletta/codechallrunner</url>
+        </repository>
+    </repositories>
+
+    <dependencies>
+        ...
+        <dependency>
+          <groupId>it.agtonybarletta.codechallrunner</groupId>
+          <artifactId>codechallrunner</artifactId>
+          <version>X.Y.Z</version>
+        </dependency>
+    </dependencies>
 ```
 
-## Usage
-
-Let's assume we want to test a function sum all integers in a list.
-Inputs files will have format `inputlistSum.<TESTCASE_NUMBER>.txt` where `<TESTCASE_NUMBER>` is between 0 and N.
+Create one or more input files for each testcase. Must be named  `<INPUT_FILENAME>.<TESTCASE_NUMBER>.txt` where `<TESTCASE_NUMER>` is an integer 0..N where N is the number of test cases
 
 ```txt
+inputListSum.0.txt
+------------------
 1 2 3 4 5 6
 ```
-Output files will have format
+
+Create one target file for each testcase. Must be named  `<TARGET_FILENAME>.<TESTCASE_NUMBER>.txt`
+
 ```txt
+targetListSum.0.txt
+------------------
 21
 ```
 
-To test the function `sumAll` you will create the following runner
+Build your own runner and test your function
+
 ```java
-        CodeChallRunner runner = new CodeChallRunnerBuilder()
-          .addFile("inputListSum")
-          .addInput(new ListInput<Integer>(new SingleInteger(), " ", "", ""))
-          .addTargetFile("targetListSum")
-          .addTarget(new SingleInteger())
-          .build();
-        Boolean result = runner.test(this, "sumAll");
+// ... imports
+public class Solution {
+
+  public Integer sumAll(List<Integer> list) {
+    int acc = 0;
+    for (Integer i : list) {
+      acc += i;
+    }
+    return acc;
+  }
+
+  public static void main(String[] args) {
+    CodeChallRunner runner = new CodeChallRunnerBuilder()
+        .addFile("inputListSum")
+        .addInput(new ListInput<Integer>(new SingleInteger(), " ", null, null))
+        .addTargetFile("targetListSum")
+        .addTarget(new SingleInteger())
+        .build();
+
+    Boolean b = runner.test(new Solution(), "sumAll");
+    System.out.println("Tests run with result: " + b);
+  }
+}
 ```
 
-## TODO
+This runner will go through all your inputs files and test the function `sumAll` against them.
 
-- [ ] fix loggin 
-- [ ] logging test
-- [ ] look into auto boxing/unboxing for test function
-- [ ] test custom class mapper for single input
-- [ ] refactor & clean
-- [ ] write readme install and usage
-- [ ] write a complete test function that identify the failed test outputing input, output and target
-- [ ] check how to call object method from static method
-- [ ] check how to call static methdo from static method
-- [ ] check matrix ( do not use new Scanner(string) )
-- [ ] check auto cast Integer/int
-- [X] create getAllInputs
-- [X] create runner test all
-- [X] create runner builder
-- [X] create Integer Input tests
-- [X] create SingleIntegerInput without mapper
-- [X] create SingleStringInput without mapper
-- [X] create empty new line test
-- [X] create list of values test
-- [X] create list of list of values test (matrix)
+## Examples of Input definitions
+
+## Known issues
+
+1. Files must be in the classpath
+2. Autoboxing and primitive types do not work yet.
+
+## License
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version. 
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details. 
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
+

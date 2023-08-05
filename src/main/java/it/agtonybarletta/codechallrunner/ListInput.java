@@ -53,7 +53,7 @@ public class ListInput<T> extends Input<List<T>> {
     try {
 
       if (this.prefix != null) {
-        logger.atInfo().log("entered prefix skipping");
+        logger.atConfig().log("entered prefix skipping");
         scanner.skip(this.escapeRegexString(this.prefix));
       }
 
@@ -76,10 +76,10 @@ public class ListInput<T> extends Input<List<T>> {
 
         String inputTerminator = this.input.getCurrentTerminator();
 
-        logger.atInfo().log("inputData: " + inputData + ", inputTerminator: " +StringEscapeUtils.escapeJava(inputTerminator));
+        logger.atConfig().log("inputData: " + inputData + ", inputTerminator: " +StringEscapeUtils.escapeJava(inputTerminator));
 
         if (inputData == null) {
-          logger.atInfo().log("read data as null");
+          logger.atConfig().log("read data as null");
           continue;
         }
         // compare inputTerminator with this.terminators too
@@ -89,11 +89,11 @@ public class ListInput<T> extends Input<List<T>> {
             // || this.terminators.contains(StringEscapeUtils.escapeJava(inputTerminator))
         ) {
           
-          logger.atInfo().log("enterd stopping condition with: "+ this.terminators + ", " + inputTerminator + ", " + this.postfix);
+          logger.atConfig().log("enterd stopping condition with: "+ this.terminators + ", " + inputTerminator + ", " + this.postfix);
           if (this.postfix != null && inputTerminator.equals(this.escapeRegexString(this.postfix))) {
             throw new RuntimeException("input ended but postfix " + this.postfix + " expected");
           } else {
-            logger.atInfo().log("stopping because terminator equal to postfix" + inputTerminator);
+            logger.atConfig().log("stopping because terminator equal to postfix" + inputTerminator);
             stop = true;
             this.currentTermnator = inputTerminator;
           }
@@ -106,7 +106,7 @@ public class ListInput<T> extends Input<List<T>> {
       scanner.useDelimiter(oldDelimiter);
     }
 
-    logger.atInfo().log("end readData. data: %s", ret);
+    logger.atConfig().log("end readData. data: %s", ret);
 
     this.data = ret;
   }

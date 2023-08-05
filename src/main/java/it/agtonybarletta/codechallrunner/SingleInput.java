@@ -35,7 +35,7 @@ public class SingleInput<T> extends Input<T>{
 
       
       String delimiter = this.getScannerDelimiter();
-      logger.atInfo().log("reading data with delimiter: " + delimiter);
+      logger.atConfig().log("reading data with delimiter: " + delimiter);
       scanner.useDelimiter(delimiter);
 
       String rawString = scanner.next();

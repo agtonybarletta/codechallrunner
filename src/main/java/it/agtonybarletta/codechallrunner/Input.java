@@ -48,13 +48,6 @@ public abstract class Input<T> implements InputI<T>{
     return this.data;  
   }
 
-  /*
-  @Override
-  protected void setTerminators(List<String> terminators) {
-      this.terminators = terminators;
-  }
-  */
-
   @Override
   public String getCurrentTerminator() {
     return this.currentTermnator;
@@ -66,12 +59,14 @@ public abstract class Input<T> implements InputI<T>{
     .map( s -> "(?<=" + s + ")|(?=" + s + ")" ).collect(Collectors.joining("|"));
   }
   protected String escapeRegexString(String s) {
-    if (s == null) return null;
+
+    if (s == null)
+      return null;
+
     String toBeEscape = "\\.[]{}()*+-=!?^$|";
     for( char c : toBeEscape.toCharArray() ) {
       s = s.replace(Character.toString(c), "\\" + c);
     }
-    System.out.println(s);
     return s;
   }
 
