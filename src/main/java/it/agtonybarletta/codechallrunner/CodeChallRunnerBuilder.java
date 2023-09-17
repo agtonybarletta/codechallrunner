@@ -1,5 +1,7 @@
 package it.agtonybarletta.codechallrunner;
 
+import it.agtonybarletta.codechallrunner.inputdefinition.InputDefinitionI;
+
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -11,7 +13,7 @@ public class CodeChallRunnerBuilder{
   private List<String> inputFiles;
   private String targetFile;
   private String currentFile = null;
-  private Map<String,List<InputI<?>>> fileInputMap;
+  private Map<String,List<InputDefinitionI<?>>> fileInputMap;
 
   public CodeChallRunnerBuilder() {
     this.inputFiles = new LinkedList<>();
@@ -32,7 +34,7 @@ public class CodeChallRunnerBuilder{
     return this;
   }
 
-  public CodeChallRunnerBuilder addInput(InputI<?> input) {
+  public CodeChallRunnerBuilder addInput(InputDefinitionI<?> input) {
       if(this.currentFile == null){
           throw new RuntimeException("Cannot add input before adding a file. Call addFile then addInput");
       }
@@ -40,7 +42,7 @@ public class CodeChallRunnerBuilder{
       return this;
   }
 
-    public CodeChallRunnerBuilder addTarget(Input<?> target) {
+    public CodeChallRunnerBuilder addTarget(InputDefinitionI<?> target) {
         if(this.currentFile == null){
             throw new RuntimeException("Cannot add input before adding a file. Call addFile then addInput");
         }

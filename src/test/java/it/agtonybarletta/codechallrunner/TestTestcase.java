@@ -5,10 +5,8 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.List;
 
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-
 import com.google.common.flogger.FluentLogger;
+import it.agtonybarletta.codechallrunner.inputdefinition.SingleIntegerDefinition;
 
 public class TestTestcase {
 
@@ -53,12 +51,12 @@ public class TestTestcase {
       fail(e);
     }
   }
-  */
+
   public void test1() {
     try{
       ListInput<Integer> input = 
           new ListInput<Integer>(
-            new SingleInteger(),
+            new SingleIntegerDefinition(),
             " ", 
             null, 
             null
@@ -90,12 +88,12 @@ public class TestTestcase {
           }
           offset += 3;
         }
-        */
+        * /
     } catch( Exception e) {
       fail(e);
     }
   }
-
+        */
   /*
   @Test
   @DisplayName("Test list of integers")

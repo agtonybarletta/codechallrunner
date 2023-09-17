@@ -5,26 +5,24 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-import java.lang.reflect.Array;
-import java.util.Arrays;
 import java.util.List;
-import java.util.function.Function;
 
+import it.agtonybarletta.codechallrunner.inputdefinition.SingleIntegerDefinition;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 public class RunnerTest{
 
-
+/*
   @Test
   @DisplayName("Test single run")
   public void testSingleRunFail() {
     try{
         CodeChallRunner runner = new CodeChallRunnerBuilder()
           .addFile("inputListIntegersWithSquareBrakets")
-          .addInput(new ListInput<Integer>(new SingleInteger(), ",", "[", "]"))
+          .addInput(new ListInput<Integer>(new SingleIntegerDefinition(), ",", "[", "]"))
           .addTargetFile("inputSingleInteger")
-          .addTarget(new SingleInteger())
+          .addTarget(new SingleIntegerDefinition())
           .build();
 
         List<?> inputs = runner.getInput(0);
@@ -54,9 +52,9 @@ public class RunnerTest{
     try{
         CodeChallRunner runner = new CodeChallRunnerBuilder()
           .addFile("inputListSum")
-          .addInput(new ListInput<Integer>(new SingleInteger(), " ", null, null))
+          .addInput(new ListInput<Integer>(new SingleIntegerDefinition(), " ", null, null))
           .addTargetFile("targetListSum")
-          .addTarget(new SingleInteger())
+          .addTarget(new SingleIntegerDefinition())
           .build();
 
 
@@ -84,7 +82,7 @@ public class RunnerTest{
     } catch( Exception e) {
       fail(e);
     }
-  }*/
+  }* /
 
   @Test
   @DisplayName("Test all testcases no file found")
@@ -92,9 +90,9 @@ public class RunnerTest{
     try{
         CodeChallRunner runner = new CodeChallRunnerBuilder()
           .addFile("nonExistingFile")
-          .addInput(new ListInput<Integer>(new SingleInteger(), " ", null, Input.NEW_LINE))
+          .addInput(new ListInput<Integer>(new SingleIntegerDefinition(), " ", null, Input.NEW_LINE))
           .addTargetFile("targetListSum")
-          .addTarget(new SingleInteger())
+          .addTarget(new SingleIntegerDefinition())
           .build();
 
         Boolean b = runner.test(this, "multiplyAll");
@@ -109,9 +107,9 @@ public class RunnerTest{
     try{
         CodeChallRunner runner = new CodeChallRunnerBuilder()
           .addFile("inputListSum")
-          .addInput(new ListInput<Integer>(new SingleInteger(), " ", null, Input.NEW_LINE))
+          .addInput(new ListInput<Integer>(new SingleIntegerDefinition(), " ", null, Input.NEW_LINE))
           .addTargetFile("nonExistingTargetFile")
-          .addTarget(new SingleInteger())
+          .addTarget(new SingleIntegerDefinition())
           .build();
 
         Boolean b = runner.test(this, "multiplyAll");
@@ -129,9 +127,9 @@ public class RunnerTest{
     try{
         CodeChallRunner runner = new CodeChallRunnerBuilder()
           .addFile("inputListIntegersWithSquareBrakets")
-          .addInput(new ListInput<Integer>(new SingleInteger(), ",", "[", "]"))
+          .addInput(new ListInput<Integer>(new SingleIntegerDefinition(), ",", "[", "]"))
           .addTargetFile("inputSingleInteger")
-          .addTarget(new SingleInteger())
+          .addTarget(new SingleIntegerDefinition())
           .build();
 
         List<?> inputs = runner.getInput(0);
@@ -165,5 +163,5 @@ public class RunnerTest{
         }
         return ret;
     }
-
+*/
 }

@@ -83,7 +83,7 @@ public class Solution {
 }
 ```
 
-This runner will go through all your inputs files and test the function `sumAll` against them.
+This runner will go through all your input files and test the function `sumAll` against them.
 
 ## Examples of Input definitions
 

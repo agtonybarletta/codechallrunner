@@ -1,13 +1,12 @@
-package it.agtonybarletta.codechallrunner;
+package it.agtonybarletta.codechallrunner.inputdefinition;
 
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import org.apache.commons.text.StringEscapeUtils;
+public abstract class InputDefinition<T> implements InputDefinitionI<T> {
 
-public abstract class Input<T> implements InputI<T>{
 
   public static String EMPTY_LINE = "(?m)\\n";
   public static String NEW_LINE = "\n";
@@ -23,11 +22,11 @@ public abstract class Input<T> implements InputI<T>{
   protected T data;
   protected String currentTermnator;
 
-  public Input() {
-    this(Input.NEW_LINE);
+  public InputDefinition() {
+    this(InputDefinition.NEW_LINE);
   }
 
-  public Input(String terminator) {
+  public InputDefinition(String terminator) {
     this.terminators = new LinkedList<>();
     this.terminators.add(terminator);
   }
@@ -38,12 +37,12 @@ public abstract class Input<T> implements InputI<T>{
   }
 
 
-  @Override
+  //@Override
   public void addTerminator(String terminator) {
     this.terminators.add(terminator);
   }
 
-  @Override
+  //@Override
   public T getData() {
     return this.data;  
   }
@@ -53,21 +52,6 @@ public abstract class Input<T> implements InputI<T>{
     return this.currentTermnator;
   }
 
-  protected String getScannerDelimiter() {
-    return this.terminators.stream()
-    .map( s -> escapeRegexString(s))
-    .map( s -> "(?<=" + s + ")|(?=" + s + ")" ).collect(Collectors.joining("|"));
-  }
-  protected String escapeRegexString(String s) {
 
-    if (s == null)
-      return null;
-
-    String toBeEscape = "\\.[]{}()*+-=!?^$|";
-    for( char c : toBeEscape.toCharArray() ) {
-      s = s.replace(Character.toString(c), "\\" + c);
-    }
-    return s;
-  }
 
 }

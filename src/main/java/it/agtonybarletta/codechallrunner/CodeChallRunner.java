@@ -1,22 +1,18 @@
 package it.agtonybarletta.codechallrunner;
 
 import com.google.common.flogger.FluentLogger;
+import it.agtonybarletta.codechallrunner.inputdefinition.InputDefinitionI;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.lang.reflect.Parameter;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
-import java.util.function.Function;
 import java.util.logging.LogManager;
-import java.util.logging.SimpleFormatter;
 import java.util.logging.XMLFormatter;
 
 public class CodeChallRunner {
@@ -26,9 +22,9 @@ public class CodeChallRunner {
 
   private List<String> inputFiles;
   private String targetFile;
-  private Map<String,List<InputI<?>>> fileInputMap;
+  private Map<String,List<InputDefinitionI<?>>> fileInputMap;
 
-  public CodeChallRunner( List<String> inputFiles, Map<String, List<InputI<?>>> fileInputMap, String targetFile) {
+  public CodeChallRunner( List<String> inputFiles, Map<String, List<InputDefinitionI<?>>> fileInputMap, String targetFile) {
     this.inputFiles = inputFiles;
     this.fileInputMap = fileInputMap;
     this.targetFile = targetFile;
@@ -49,10 +45,10 @@ public class CodeChallRunner {
         }
 
         scanner = new Scanner(inputFile);
-        for (InputI<?> i : fileInputMap.get(s)) {
+        for (InputDefinitionI<?> i : fileInputMap.get(s)) {
           Scanner data = scanner;
-          i.readData(data);
-          ret.add(i.getData());
+          //i.readData(data);
+          //ret.add(i.getData());
         }
       }
       // TODO improve readibility

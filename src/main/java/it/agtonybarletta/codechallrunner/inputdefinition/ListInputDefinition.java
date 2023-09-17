@@ -1,20 +1,17 @@
-package it.agtonybarletta.codechallrunner;
+package it.agtonybarletta.codechallrunner.inputdefinition;
 
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
-import javax.management.RuntimeMBeanException;
-
+import it.agtonybarletta.codechallrunner.inputdefinition.InputDefinition;
+import it.agtonybarletta.codechallrunner.inputdefinition.InputDefinitionI;
 import org.apache.commons.text.StringEscapeUtils;
 
 import com.google.common.flogger.FluentLogger;
 
-public class ListInput<T> extends Input<List<T>> {
+public class ListInputDefinition<T> extends InputDefinition<List<T>> {
 
   // read the next pattern but keep the delimiter
   // https://stackoverflow.com/questions/2206378/how-to-split-a-string-but-also-keep-the-delimiters
@@ -24,9 +21,10 @@ public class ListInput<T> extends Input<List<T>> {
   private String separator;
   private String prefix;
   private String postfix;
-  private InputI<T> input;
+  private InputDefinitionI<T> input;
+  private boolean exitedForTerminator; 
 
-  public ListInput(InputI<T> input, String separator, String prefix, String postfix) {
+  public ListInputDefinition(InputDefinitionI<T> input, String separator, String prefix, String postfix) {
     super(prefix);
     this.input = input;
     this.separator = separator;
@@ -34,15 +32,16 @@ public class ListInput<T> extends Input<List<T>> {
     this.postfix = postfix;
   }
 
-  @Override
+
+
+  // TODO move to mapper/consumer
+  /*@Override
   public void readData(Scanner scanner) {
 
     this.data = null;
     this.currentTermnator = null;
-    // System.out.println("reading data for ListInput, separator: %s, prefix %s,
-    // postfix %s".formatted(this.separator, this.prefix, this.postfix));
 
-    //logger.atInfo().log("readData with terminators: " + this.terminators);
+    logger.atInfo().log("readData with terminators: " + this.terminators);
 
     Pattern oldDelimiter = scanner.delimiter();
 
@@ -53,11 +52,11 @@ public class ListInput<T> extends Input<List<T>> {
     try {
 
       if (this.prefix != null) {
-        logger.atConfig().log("entered prefix skipping");
+        logger.atInfo().log("entered prefix skipping");
+        logger.atInfo().log("escaping: "+ this.prefix);
         scanner.skip(this.escapeRegexString(this.prefix));
       }
 
-      //this.input.addTerminator(oldDelimiter.toString());
       this.input.addTerminator(this.separator);
 
       this.terminators.forEach( t -> this.input.addTerminator(t));
@@ -76,27 +75,26 @@ public class ListInput<T> extends Input<List<T>> {
 
         String inputTerminator = this.input.getCurrentTerminator();
 
-        logger.atConfig().log("inputData: " + inputData + ", inputTerminator: " +StringEscapeUtils.escapeJava(inputTerminator));
+        logger.atInfo().log("inputData: " + inputData + ", inputTerminator: " +StringEscapeUtils.escapeJava(inputTerminator));
 
         if (inputData == null) {
-          logger.atConfig().log("read data as null");
+          logger.atInfo().log("read data as null");
           continue;
         }
+
         // compare inputTerminator with this.terminators too
-        if (this.terminators.contains(inputTerminator) || 
+        if ((this.terminators.contains(inputTerminator) && this.postfix == null) ||
             inputTerminator == null || 
-            inputTerminator.equals(this.postfix) 
-            // || this.terminators.contains(StringEscapeUtils.escapeJava(inputTerminator))
+            inputTerminator.equals(this.postfix)
         ) {
           
-          logger.atConfig().log("enterd stopping condition with: "+ this.terminators + ", " + inputTerminator + ", " + this.postfix);
+          logger.atInfo().log("entered stopping condition with: "+ this.terminators + ", " + inputTerminator + ", " + this.postfix);
           if (this.postfix != null && inputTerminator.equals(this.escapeRegexString(this.postfix))) {
             throw new RuntimeException("input ended but postfix " + this.postfix + " expected");
-          } else {
-            logger.atConfig().log("stopping because terminator equal to postfix" + inputTerminator);
-            stop = true;
-            this.currentTermnator = inputTerminator;
           }
+          logger.atInfo().log("stopping because terminator equal to postfix" + inputTerminator);
+          stop = true;
+          this.currentTermnator = inputTerminator;
         }
         ret.add(inputData);
       }
@@ -106,12 +104,34 @@ public class ListInput<T> extends Input<List<T>> {
       scanner.useDelimiter(oldDelimiter);
     }
 
-    logger.atConfig().log("end readData. data: %s", ret);
+    logger.atInfo().log("end readData. data: %s", ret);
 
     this.data = ret;
-  }
+  }*/
+
+  /*
+  public boolean exitCondition(Input<?> input List<String> terminators, String postfix, String inputTerminator, List<String> inputTerminators, String inputPostfix) {
+    // case 1 exit beacause inner input got outer separator
+    // es a,b,c|e,f,g
+    // inner input terminated with |, which is outer separator
+    if ( inputTerminator ==  null ) {
+      // exit if input didn't set any terminator
+      // case end of input
+      return true;
+    } else if ( inputTerminator )
+    return false;
+  }*/
 
   public String toString() {
     return "{ separator: " + this.separator + ", data: " + this.data.toString() + " }";
+  }
+
+  @Override
+  public List<String> setTerminators(List<String> terminators) {
+    return this.terminators = terminators;
+  }
+
+  public InputDefinitionI<T> getInputDefinition() {
+    return this.input;
   }
 }

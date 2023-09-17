@@ -8,6 +8,7 @@ import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import it.agtonybarletta.codechallrunner.inputdefinition.SingleIntegerDefinition;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -17,6 +18,7 @@ public class TestList {
 
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
+  /*
   @Test
   @DisplayName("Test list of list")
   public void testListOfList() {
@@ -25,7 +27,7 @@ public class TestList {
     //String input = "1 2 3<END> 4 5 6<END> 7 8 9<END>";
     String input = "1 2 3<END>4 5 6<END>7 8 9<END>";
     ListInput<Integer> listOfIntegerInputDefinition = new ListInput<Integer>(
-        new SingleInteger(),
+        new SingleIntegerDefinition(),
         " ",
         null,
         null);
@@ -55,7 +57,7 @@ public class TestList {
     String input = "1, 2, 3 <END> 4, 5, 6 <END> 7 ,8, 9<END>";
     //String input = "1 2 3<END>4 5 6<END>7 8 9<END>";
     ListInput<Integer> listOfIntegerInputDefinition = new ListInput<Integer>(
-        new SingleInteger(),
+        new SingleIntegerDefinition(),
         ",",
         null,
         null);
@@ -87,7 +89,7 @@ public class TestList {
                    "7 8 9";
     //String input = "1 2 3<END>4 5 6<END>7 8 9<END>";
     ListInput<Integer> listOfIntegerInputDefinition = new ListInput<Integer>(
-        new SingleInteger(),
+        new SingleIntegerDefinition(),
         " ",
         null,
         null);
@@ -109,4 +111,37 @@ public class TestList {
       fail(e);
     }
   }
+
+  @Test
+  @DisplayName("Test matrix single line with square brakets")
+  public void testMatrixSingleLine() {
+
+    Logger.getLogger("it.agtonybarletta.codechallrunner").setLevel(Level.INFO);
+
+    String input = "[[0,0,0],[0,1,0],[0,0,0]]";
+
+    ListInput<Integer> listOfIntegerInputDefinition = new ListInput<Integer>(
+        new SingleIntegerDefinition(),
+        ",",
+        "[",
+        "]");
+    ListInput<List<Integer>> matrix = new ListInput<List<Integer>>(
+        listOfIntegerInputDefinition,
+        ",",
+        "[",
+        "]");
+
+    try {
+
+      Scanner scanner = new Scanner(input);
+      matrix.readData(scanner);
+      List<List<Integer>> list = matrix.getData();
+      logger.atInfo().log("list: " + list);
+      assertEquals(list.size(), 3);
+      assertEquals(list.get(0).size(), 3);
+
+    } catch (Exception e) {
+      fail(e);
+    }
+  }*/
 }

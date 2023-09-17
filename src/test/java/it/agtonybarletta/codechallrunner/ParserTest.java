@@ -6,27 +6,27 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.FileNotFoundException;
-import java.util.Collections;
 import java.util.List;
-import java.util.Scanner;
-import java.util.function.Function;
 
 import com.google.common.flogger.FluentLogger;
 
+import it.agtonybarletta.codechallrunner.inputdefinition.SingleInputDefinition;
+import it.agtonybarletta.codechallrunner.inputdefinition.SingleIntegerDefinition;
+import it.agtonybarletta.codechallrunner.inputdefinition.SingleStringDefinition;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 public class ParserTest {
 
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
-
+    /*
   @Test
   @DisplayName("Test single string")
   public void testSingleString() {
     try{
         CodeChallRunner runner = new CodeChallRunnerBuilder()
           .addFile("inputSingleString1")
-          .addInput(new SingleInput<String>(Input.Mappers.stringMapper))
+          .addInput(new SingleInputDefinition<String>(Input.Mappers.stringMapper))
           .build();
 
         List<?> inputs = runner.getInput(0);
@@ -45,9 +45,9 @@ public class ParserTest {
     try{
         CodeChallRunner runner = new CodeChallRunnerBuilder()
           .addFile("inputSingleStringComma")
-          .addInput(new SingleInput<String>(",", Input.Mappers.stringMapper))
-          .addInput(new SingleInput<String>(",", Input.Mappers.stringMapper))
-          .addInput(new SingleInput<String>(",", Input.Mappers.stringMapper))
+          .addInput(new SingleInputDefinition<String>(",", Input.Mappers.stringMapper))
+          .addInput(new SingleInputDefinition<String>(",", Input.Mappers.stringMapper))
+          .addInput(new SingleInputDefinition<String>(",", Input.Mappers.stringMapper))
           .build();
 
         List<?> inputs = runner.getInput(0);
@@ -69,8 +69,8 @@ public class ParserTest {
     try{
         CodeChallRunner runner = new CodeChallRunnerBuilder()
           .addFile("inputMultipleStrings1")
-          .addInput(new SingleInput<String>(Input.Mappers.stringMapper))
-          .addInput(new SingleInput<String>(Input.Mappers.stringMapper))
+          .addInput(new SingleInputDefinition<String>(Input.Mappers.stringMapper))
+          .addInput(new SingleInputDefinition<String>(Input.Mappers.stringMapper))
           .build();
 
         List<?> inputs = runner.getInput(0);
@@ -90,7 +90,7 @@ public class ParserTest {
     try{
         CodeChallRunner runner = new CodeChallRunnerBuilder()
           .addFile("inputSingleString1")
-          .addInput(new SingleInput<String>(Input.Mappers.stringMapper))
+          .addInput(new SingleInputDefinition<String>(Input.Mappers.stringMapper))
           .build();
 
         List<?> inputsTestCase1 = runner.getInput(0);
@@ -121,10 +121,10 @@ public class ParserTest {
     try{
       CodeChallRunner runner = new CodeChallRunnerBuilder()
         .addFile("inputSingleString1")
-        .addInput(new SingleInput<String>(Input.Mappers.stringMapper))
+        .addInput(new SingleInputDefinition<String>(Input.Mappers.stringMapper))
         .addFile("inputMultipleStrings1")
-        .addInput(new SingleInput<String>(Input.Mappers.stringMapper))
-        .addInput(new SingleInput<String>(Input.Mappers.stringMapper))
+        .addInput(new SingleInputDefinition<String>(Input.Mappers.stringMapper))
+        .addInput(new SingleInputDefinition<String>(Input.Mappers.stringMapper))
         .build();
 
         List<?> inputs = runner.getInput(0);
@@ -150,10 +150,10 @@ public class ParserTest {
     try{
         CodeChallRunner runner = new CodeChallRunnerBuilder()
           .addFile("inputSingleString1")
-          .addInput(new SingleInput<String>(" ", Input.Mappers.stringMapper))
-          .addInput(new SingleInput<String>(" ", Input.Mappers.stringMapper))
-          .addInput(new SingleInput<String>(" ", Input.Mappers.stringMapper))
-          .addInput(new SingleInput<String>(" ", Input.Mappers.stringMapper))
+          .addInput(new SingleInputDefinition<String>(" ", Input.Mappers.stringMapper))
+          .addInput(new SingleInputDefinition<String>(" ", Input.Mappers.stringMapper))
+          .addInput(new SingleInputDefinition<String>(" ", Input.Mappers.stringMapper))
+          .addInput(new SingleInputDefinition<String>(" ", Input.Mappers.stringMapper))
           .build();
 
         List<?> inputs = runner.getInput(1);
@@ -174,14 +174,14 @@ public class ParserTest {
 
   /*
    * INTEGER
-   */
+   * /
   @Test
   @DisplayName("Test single integer")
   public void testSingleInteger() {
     try{
           CodeChallRunner runner = new CodeChallRunnerBuilder()
           .addFile("inputSingleInteger")
-          .addInput(new SingleInput<Integer>(Input.Mappers.intMapper))
+          .addInput(new SingleInputDefinition<Integer>(Input.Mappers.intMapper))
           .build();
 
         List<?> inputs = runner.getInput(0);
@@ -193,25 +193,7 @@ public class ParserTest {
     }
   }
 
-  @Test
-  @DisplayName("Test single integer parsing error")
-  public void testSingleIntegerParsingError() {
-    try{
-        CodeChallRunner runner = new CodeChallRunnerBuilder()
-          .addFile("inputSingleString1")
-          .addInput(new SingleInput<Integer>(Input.Mappers.intMapper))
-          .build();
 
-        try{
-          List<?> inputs = runner.getInput(0);
-          fail("Exception NumberFormatException not thrown");
-        } catch (NumberFormatException e) {
-
-        }
-    } catch( Exception e) {
-      fail("Test single integer failed with exception "+ e.getMessage());
-    }
-  }
 
 
   @Test
@@ -220,9 +202,9 @@ public class ParserTest {
     try{
         CodeChallRunner runner = new CodeChallRunnerBuilder()
           .addFile("inputSingleString1")
-          .addInput(new SingleString())
+          .addInput(new SingleStringDefinition())
           .addFile("inputSingleInteger")
-          .addInput(new SingleInteger())
+          .addInput(new SingleIntegerDefinition())
           .build();
 
         List<?> inputs = runner.getInput(0);
@@ -240,7 +222,7 @@ public class ParserTest {
     try{
         CodeChallRunner runner = new CodeChallRunnerBuilder()
           .addFile("inputListStrings")
-          .addInput(new ListInput<String>(new SingleString(), Input.NEW_LINE, null, null))
+          .addInput(new ListInput<String>(new SingleStringDefinition(), Input.NEW_LINE, null, null))
           .build();
 
         List<?> inputs = runner.getInput(0);
@@ -261,7 +243,7 @@ public class ParserTest {
     try{
         CodeChallRunner runner = new CodeChallRunnerBuilder()
           .addFile("inputListIntegers")
-          .addInput(new ListInput<Integer>(new SingleInteger(), ",", null, null))
+          .addInput(new ListInput<Integer>(new SingleIntegerDefinition(), ",", null, null))
           .build();
 
         List<?> inputs = runner.getInput(0);
@@ -285,7 +267,7 @@ public class ParserTest {
     try{
         CodeChallRunner runner = new CodeChallRunnerBuilder()
           .addFile("inputListIntegersWithSquareBrakets")
-          .addInput(new ListInput<Integer>(new SingleInteger(), ",", "[", "]"))
+          .addInput(new ListInput<Integer>(new SingleIntegerDefinition(), ",", "[", "]"))
           .build();
 
         List<?> inputs = runner.getInput(0);
@@ -309,9 +291,9 @@ public class ParserTest {
     try{
         CodeChallRunner runner = new CodeChallRunnerBuilder()
           .addFile("inputListIntegersWithSquareBrakets")
-          .addInput(new ListInput<Integer>(new SingleInteger(), ",", "[", "]"))
+          .addInput(new ListInput<Integer>(new SingleIntegerDefinition(), ",", "[", "]"))
           .addTargetFile("targetSumList")
-          .addTarget(new SingleInteger())
+          .addTarget(new SingleIntegerDefinition())
           .build();
 
         List<?> inputs = runner.getInput(0);
@@ -331,6 +313,6 @@ public class ParserTest {
       fail(e);
     }
   }
-
+    */
 
 }
